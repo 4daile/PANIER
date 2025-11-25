@@ -52,13 +52,43 @@ body {
     height: 100px;
 }
 
-#buttons {
-    display: flex;
+button {
     flex-direction: row;
     justify-content: center;
     padding: 10px;
     font-size: 14px;
     text-transform: uppercase;
+    gap: 20px;
+
+    font-family: "Kosugi", sans-serif;
+    color: #703B3B;
+}
+
+#add-to-basket {
+    background-color: #FCB53B;
+    border: #703B3B 1px solid;
+    padding: 5px 15px;
+    user-select: none;
+}
+
+#add-to-basket:hover {
+    background-color: #FFA500;
+    cursor: pointer;
+    box-shadow: #703B3B 2px 2px 5px;
+}
+
+#cancel-button {
+    background-color: #FFE797;
+    border: #703B3B 1px solid;
+    padding: 5px 15px;
+    user-select: none;
+}
+
+#cancel-button:hover {
+    background-color: #FFD966;
+    cursor: pointer;
+    box-shadow: #703B3B 2px 2px 5px;
+    padding: 5px 15px;
 }
 
 #cel2 {
