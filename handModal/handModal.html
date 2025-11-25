@@ -4,12 +4,24 @@
 	</head>
 
 	<body>
-		<div>
-			<input type="text" id="page-url" placeholder="URL de la page" />
-			<input type="text" id="selected-text" placeholder="Texte sélectionné" />
-			<input type="text" id="date" placeholder="Date" />
-			<button type="submit" id="add-to-basket">Ajouter au panier</button>
-			<button type="button" id="cancel-button">Annuler</button>
+	<div class="mainbox">
+			<div id="cel1">
+				<div id="txt">
+					<input type="text" id="selected-text" placeholder="Texte sélectionné" />
+				</div>
+				<div id="buttons">
+					<button type="submit" id="add-to-basket">Ajouter au panier</button>
+					<button type="button" id="cancel-button">Annuler</button>
+				</div>
+			</div>
+
+			<div id="cel2">
+				<input type="text" id="page-url" placeholder="URL de la page" />
+			</div>
+			<div id="cel3">
+				<input type="text" id="date" placeholder="Date" />
+			</div>
+
 		</div>
 
 		<script src="handModal.js"></script>

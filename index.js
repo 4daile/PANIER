@@ -32,8 +32,8 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 		chrome.windows.create({
 			url: chrome.runtime.getURL("basketModal/basketModal.html"),
 			type: "popup",
-			width: 400,
-			height: 600,
+			width: 300,
+			height: 200,
 		});
 	}
 
@@ -54,7 +54,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 			url: chrome.runtime.getURL("handModal/handModal.html?data=" + data),
 			type: "popup",
 			width: 400,
-			height: 600,
+			height: 300,
 		});
 	}
 });
