@@ -50,6 +50,15 @@ body {
     color: #A72703;
 }
 
+#link {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+#link:hover {
+    color: #84994F;
+}
+
 #cel2 {
     grid-area: 1 / 2 / 2 / 3;
     border: #703B3B 1px solid;
