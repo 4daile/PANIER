@@ -52,9 +52,13 @@ body {
     align-items: center;
 }
 
-::placeholder {
-    color: #A72703;
-    opacity: 1;
+input {
+    font-family: "Kosugi", sans-serif;
+    color: #703B3B;
+    background-color: #FFE797;
+    border-radius: 20px;
+    border: #A72703 1px solid;
+    padding: 5px;
 }
 
 
