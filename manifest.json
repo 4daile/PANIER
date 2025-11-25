@@ -1,0 +1,14 @@
+{
+	"name": "PANIER",
+	"description": "PANIER est un outil pour cueillir le web. Ramassez des fragments de textes et d’images pour les déposer dans votre panier. ",
+	"version": "0.7",
+	"permissions": ["contextMenus", "scripting", "activeTab"],
+	"background": {
+		"service_worker": "index.js"
+	},
+	"manifest_version": 3,
+	"action": {
+		"default_title": "PANIER",
+        "default_popup": "defaultPopup/index.html"
+	}
+}
