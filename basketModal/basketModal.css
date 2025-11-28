@@ -18,7 +18,7 @@ body {
     font-family: "Kosugi", sans-serif;
     position: fixed;
     top: 20px;
-    right: 20px;
+    /* right: 20px; */
     padding: 10px 15px;
     font-size: 14px;
     text-transform: uppercase;
@@ -40,5 +40,5 @@ body {
     width: 300px;
     height: 100%;
     background-color: #FFF3C4;
-    display: none;
+    /*display: none;*/
 }
