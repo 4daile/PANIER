@@ -15,34 +15,65 @@ body {
 }
 
 .open {
-    font-family: "Kosugi", sans-serif;
     position: fixed;
     top: 20px;
-    /* right: 20px; */
+    right: 20px; 
     padding: 10px 15px;
-    font-size: 14px;
-    text-transform: uppercase;
     background-color: #703B3B;
     color: #FFE797;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    user-select: none;
+    width: 10%;
+    transition: 0.3s;
+
 }
 
 .open:hover {
     background-color: #5a2e2e;
+    user-select: none;
+}
+
+.close {
+    position: fixed;
+    color: #703B3B;
+    font-size: 20px;
+    padding: 20px;
+    border: none;
+    background-color: #FFF3C4;
+    cursor: pointer;
+    user-select: none;
+}
+
+#panier {
+    width: 30%;
+    margin: 0 auto;
+}
+
+.panneau-header {
+    padding: 30px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .panneau {
+    display: flex;
     position: fixed;
     top: 0;
     right: 0;
-    width: 300px;
+    width: 400px;
     height: 100%;
     background-color: #FFF3C4;
-    display: none;
+
+    transform: translateX(100%);
+    transition: 0.4s ease-in-out;
 }
 
-.active {
-    display: block;
+.panneau.active {
+    transform: translateX(0);
+    transition: right 0.3s ease-in-out;
 }
+
