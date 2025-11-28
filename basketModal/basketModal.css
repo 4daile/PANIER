@@ -1,0 +1,44 @@
+@font-face {
+    font-family: "Kosugi";
+    src: url(/SRC/typo/Kosugi-Regular.ttf);
+}
+
+body {
+    font-family: "Kosugi", sans-serif;
+    background-color: #FFE797;
+    margin: 0;
+    padding: 5px;
+
+    scroll-behavior: smooth;
+    
+    overflow-x: hidden;
+}
+
+.open {
+    font-family: "Kosugi", sans-serif;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px 15px;
+    font-size: 14px;
+    text-transform: uppercase;
+    background-color: #703B3B;
+    color: #FFE797;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.open:hover {
+    background-color: #5a2e2e;
+}
+
+.panneau {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 300px;
+    height: 100%;
+    background-color: #FFF3C4;
+    display: none;
+}
