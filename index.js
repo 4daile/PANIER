@@ -1,7 +1,7 @@
 // ajout un élément de menu contextuel (menu clic-droit)
 chrome.contextMenus.create({
-	id: "ceuillir",
-	title: "Ceuillir",
+	id: "cueillir",
+	title: "Cueillir",
 	contexts: ["all"],
 });
 
@@ -37,7 +37,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 		});
 	}
 
-	if (info.menuItemId === "ceuillir") {
+	if (info.menuItemId === "cueillir") {
 		console.log("Affichage du modal");
 		console.log(info.pageUrl);
 		console.log(info.selectionText);
