@@ -6,6 +6,7 @@ window.onload = async function () {
 	await getOrInitBasketItems();
 
 	const itemsContainer = document.getElementById("items-container");
+	console.log("items-container")
 	
 	if (basketItems.length === 0) {
 		itemsContainer.innerHTML = "<p>Le panier est vide.</p>";
@@ -14,15 +15,23 @@ window.onload = async function () {
 			const itemDiv = document.createElement("div");
 			itemDiv.className = "basket-item";
 			itemDiv.innerHTML = `
-				<h3>Élément ${index + 1}</h3>
-				<p><strong>URL :</strong> ${item.url}</p>
-				<p><strong>Texte sélectionné :</strong> ${item.selection}</p>
-				<p><strong>Date :</strong> ${item.date}</p>
+   				 <p>${item.selection}</p>
+    			<p style="font-size:12px; color:#777;">${item.date}</p>
+    			<p style="font-size:12px; color:#999;">${item.url}</p>
 			`;
 			itemsContainer.appendChild(itemDiv);
 		});
 	}
 }
+
+const containerWidth = itemsContainer.offsetWidth;
+const containerHeight = itemsContainer.offsetHeight;
+
+const x = Math.random() * (containerWidth - 250);
+const y = Math.random() * (containerHeight - 120);
+
+itemDiv.style.left = `${x}px`;
+itemDiv.style.top = `${y}px`;
 
 async function getOrInitBasketItems() {
 	const stored = localStorage.getItem("basketItems");
