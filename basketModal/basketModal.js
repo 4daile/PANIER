@@ -1,5 +1,5 @@
 let basketItems;
-//items-container
+let checkInterval; 
 
 window.onload = async function () {
 	// update basketItems
@@ -19,19 +19,22 @@ window.onload = async function () {
     			<p style="font-size:12px; color:#84994F;">${item.date}</p>
     			<p style="font-size:12px; color:#84994F;">${item.url}</p>
 			`;
+			
+			const containerWidth = itemsContainer.offsetWidth;
+			const containerHeight = itemsContainer.offsetHeight;
+
+			const x = Math.random() * (containerWidth - 250);
+			const y = Math.random() * (containerHeight - 120);
+
+			itemDiv.style.left = `${x}px`;
+			itemDiv.style.top = `${y}px`;
+			
 			itemsContainer.appendChild(itemDiv);
 		});
 	}
+	
+	checkInterval = setInterval(checkIfBasketIsDifferent, 1000);
 }
-
-const containerWidth = itemsContainer.offsetWidth;
-const containerHeight = itemsContainer.offsetHeight;
-
-const x = Math.random() * (containerWidth - 250);
-const y = Math.random() * (containerHeight - 120);
-
-itemDiv.style.left = `${x}px`;
-itemDiv.style.top = `${y}px`;
 
 async function getOrInitBasketItems() {
 	const stored = localStorage.getItem("basketItems");
@@ -44,4 +47,16 @@ async function getOrInitBasketItems() {
 	} else {
 		console.log("Valeur retrouvée :", basketItems);
 	}
+}
+
+function checkIfBasketIsDifferent() {
+    const storedBasket = localStorage.getItem("basketItems");
+    const currentBasket = JSON.stringify(basketItems);
+    
+    if (storedBasket !== currentBasket) {
+        console.log("basketItems a changé");
+        location.reload();
+    } else {
+        console.log("basketItems n'a pas changé");
+    }
 }
