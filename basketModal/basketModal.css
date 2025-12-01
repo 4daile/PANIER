@@ -126,17 +126,19 @@ body {
 .basket-item {
     position: absolute;
     width: 250px;
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    background: #f5e4a8;
+    border: 1px solid #703B3B;
     padding: 12px;
     font-size: 14px;
     color: #333;
 
-    transition: box-shadow 0.2s ease;
+    flex-wrap: wrap;
+    cursor: pointer;
 }
 
 .basket-item:hover {
+    transition: 1s ease;
     box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+    z-index: 100;
 }
 

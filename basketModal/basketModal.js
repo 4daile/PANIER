@@ -16,8 +16,8 @@ window.onload = async function () {
 			itemDiv.className = "basket-item";
 			itemDiv.innerHTML = `
    				 <p>${item.selection}</p>
-    			<p style="font-size:12px; color:#777;">${item.date}</p>
-    			<p style="font-size:12px; color:#999;">${item.url}</p>
+    			<p style="font-size:12px; color:#84994F;">${item.date}</p>
+    			<p style="font-size:12px; color:#84994F;">${item.url}</p>
 			`;
 			itemsContainer.appendChild(itemDiv);
 		});

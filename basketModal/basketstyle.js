@@ -21,7 +21,33 @@ function closePanneau(){
 }
 
 
-// ______________________________
+// ———————————————————————————————
+// POSITIONNEMENT ALÉATOIRE DES ITEMS
+// ———————————————————————————————
 
+window.addEventListener("load", function() {
 
+    const itemsContainer = document.getElementById("items-container");
+    const items = document.querySelectorAll(".basket-item");
+
+    // s'assure que le conteneur permet le placement libre
+    itemsContainer.style.position = "relative";
+
+    items.forEach(item => {
+
+        item.style.position = "absolute";
+
+        const containerWidth = itemsContainer.clientWidth;
+        const containerHeight = itemsContainer.clientHeight;
+
+        const itemWidth = item.offsetWidth || 200;
+        const itemHeight = item.offsetHeight || 100;
+
+        const x = Math.random() * Math.max(0, containerWidth - itemWidth);
+        const y = Math.random() * Math.max(0, containerHeight - itemHeight);
+
+        item.style.left = `${Math.round(x)}px`;
+        item.style.top = `${Math.round(y)}px`;
+    });
+});
 
