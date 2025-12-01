@@ -14,6 +14,19 @@ body {
     overflow-x: hidden;
 }
 
+.filtres {
+    position: relative;
+    margin: auto;
+    top: 20px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    z-index: 1000;
+
+    justify-content: center;
+    align-items: center;
+}
+
 .open {
     position: fixed;
     top: 20px;
@@ -99,10 +112,6 @@ body {
     flex-direction: column;
 }
 
-/*.panneau.active {
-    transform: translateX(0);
-    transition: right 0.3s ease-in-out;
-}*/
 
 .panneau.active {
     transform: translateX(0);

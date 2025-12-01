@@ -22,10 +22,13 @@ function closePanneau(){
 
 
 // ———————————————————————————————
-// POSITIONNEMENT ALÉATOIRE DES ITEMS
+// POSITIONNEMENT ALÉATOIRE DES ITEMS = NUAGE VIEW
 // ———————————————————————————————
 
-window.addEventListener("load", function() {
+let nuageButton = document.getElementById("nuage");
+nuageButton.addEventListener("click", positionItemsRandomly);
+
+function positionItemsRandomly() {
 
     const itemsContainer = document.getElementById("items-container");
     const items = document.querySelectorAll(".basket-item");
@@ -49,5 +52,12 @@ window.addEventListener("load", function() {
         item.style.left = `${Math.round(x)}px`;
         item.style.top = `${Math.round(y)}px`;
     });
-});
+}
+
+// ______________________
+// COLLECTION VIEW BUTTON = CHRONOLOGICAL ORDER 
+// ______________________
+
+
+
 
