@@ -15,7 +15,7 @@ body {
 }
 
 .filtres {
-    position: relative;
+    position: sticky;
     margin: auto;
     top: 20px;
     display: flex;
