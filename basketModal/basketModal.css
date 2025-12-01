@@ -3,6 +3,10 @@
     src: url(/SRC/typo/Kosugi-Regular.ttf);
 }
 
+/** ________________ **/
+/* BASIC STYLE */
+/** ________________ **/
+
 body {
     font-family: "Kosugi", sans-serif;
     background-color: #FFE797;
@@ -13,6 +17,10 @@ body {
     
     overflow-x: hidden;
 }
+
+/** ________________ **/
+/* HEADER = BOUTONS FILTRES */
+/** ________________ **/
 
 .filtres {
     position: sticky;
@@ -25,7 +33,13 @@ body {
 
     justify-content: center;
     align-items: center;
+
+    user-select: none;
 }
+
+/** ________________ **/
+/* PANNEAU D'INFOS */
+/** ________________ **/
 
 .open {
     position: fixed;
@@ -50,6 +64,8 @@ body {
 
 .close {
     position: fixed;
+    top: 5px;
+    left: 5px;
     color: #703B3B;
     font-size: 20px;
     padding: 20px;
@@ -57,7 +73,7 @@ body {
     background-color: #FFF3C4;
     cursor: pointer;
     user-select: none;
-    z-index: 100;
+    z-index: 10000;
 }
 
 .close:hover {
@@ -83,19 +99,6 @@ body {
     position: relative;
 }
 
-/*.panneau {
-    display: flex;
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 400px;
-    height: 100%;
-    background-color: #FFF3C4;
-
-    transform: translateX(100%);
-    transition: 0.4s ease-in-out;
-}*/
-
 .panneau {
     position: fixed;
     top: 0;
@@ -112,7 +115,6 @@ body {
     flex-direction: column;
 }
 
-
 .panneau.active {
     transform: translateX(0);
 }
@@ -125,7 +127,10 @@ body {
     font-size: 16px;
 }
 
-/* Container principal */
+/** ________________ **/
+/* CONTAINER = DATAS (BODY) */
+/** ________________ **/
+
 #items-container {
     padding: 20px;
     min-height: 100vh;
