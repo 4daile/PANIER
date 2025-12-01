@@ -1,4 +1,13 @@
+// _____________________________
+// BUTTONS :D
+// _____________________________
+
 console.log("hello worlds")
+
+let DeleteButton = document.querySelector(".delete"); 
+DeleteButton.addEventListener("click", function() {
+    clearBasket();
+})
 
 let myButton = document.querySelector(".open");
 myButton.addEventListener("click", function() {
@@ -20,6 +29,10 @@ function closePanneau(){
     document.querySelector(".panneau").classList.remove("active")
 }
 
+function clearBasket() {
+    localStorage.removeItem("basketItems");
+    location.reload();
+}
 
 // ______________________________
 // LOADING BASKET 

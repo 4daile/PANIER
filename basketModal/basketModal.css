@@ -127,6 +127,21 @@ body {
     font-size: 16px;
 }
 
+.attention {
+    display: flex;
+    margin: auto;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+h5 {
+    font-size: 13px;
+    color: red;
+    text-align: center;
+    width: 200px;
+}
+
 /** ________________ **/
 /* CONTAINER = DATAS (BODY) */
 /** ________________ **/
