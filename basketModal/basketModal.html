@@ -7,31 +7,31 @@
 	<link rel="stylesheet" href="basketModal.css" />
 </head>
 <body>
+		<div class="panier">
+			<div class="filtres">
+				<button id="nuage">nuage view</button>
+				<button id="chrono">collection view</button>
+			</div>
 
-		<div class="filtres">
-			<button id="nuage">nuage view</button>
-			<button id="chrono">collection view</button>
+			<div id="items-container"></div>
+
+			<img class="open" src="/SRC/img/button.png" alt="button_panier">
+
+			<div class="panneau">
+				<button class="close">⨉</button>
+				<div class="panneau-header">
+				<img id="panier" src="/SRC/img/PANIER.png" alt="panier">
+				</div>
+				<div class="infos">
+					panier est un super plug-in pour récolter des fragments de textes du web!!
+				</div>
+				<a href="print.html" target="_blank" class="print-button">🖨️ Imprimer en leporello</a>
+				<div class="attention">
+					<h5>Attention!! Cette action est irréversible et tout le contenu de votre panier sera supprimé!</h5>
+					<button class="delete">vider mon panier</button>
+				</div>
+			</div>
 		</div>
-
-		<div id="items-container"></div>
-
-		<img class="open" src="/SRC/img/button.png" alt="button_panier">
-
-		<div class="panneau">
-			<button class="close">⨉</button>
-			<div class="panneau-header">
-			<img id="panier" src="/SRC/img/PANIER.png" alt="panier">
-			</div>
-			<div class="infos">
-				panier est un super plug-in pour récolter des fragments de textes du web!!
-			</div>
-			<a href="print.html" target="_blank" class="print-button">🖨️ Imprimer en leporello</a>
-			<div class="attention">
-				<h5>Attention!! Cette action est irréversible et tout le contenu de votre panier sera supprimé!</h5>
-				<button class="delete">vider mon panier</button>
-			</div>
-		</div>
-
 </body>
 		<script src="basketModal.js"></script>
 		<script src="basketstyle.js"></script>

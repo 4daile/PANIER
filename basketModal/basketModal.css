@@ -9,13 +9,23 @@
 
 body {
     font-family: "Kosugi", sans-serif;
-    background-color: #FFE797;
     margin: 0;
-    padding: 5px;
-
     scroll-behavior: smooth;
+    position: sticky;
     
     overflow-x: hidden;
+}
+
+.panier {
+    background-image: url('/SRC/img/TEST2.png');
+    /* Keep background fixed to the viewport so it doesn't move while scrolling */
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    min-height: 100vh; /* ensures the background covers the viewport */
+    /* If you still want the .panier element to stick to the top use position: sticky; top: 0;
+       but for a fixed background it's not necessary to set the element as sticky. */
 }
 
 /** ________________ **/
@@ -165,7 +175,7 @@ h5 {
 /** ________________ **/
 
 #items-container {
-    padding: 20px;
+    padding: 50px;
     min-height: 100vh;
     position: relative;
 }
