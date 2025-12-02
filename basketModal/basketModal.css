@@ -17,7 +17,7 @@ body {
 }
 
 .panier {
-    background-image: url('/SRC/img/TEST2.png');
+    background-image: url('/SRC/img/TEST7.png');
     /* Keep background fixed to the viewport so it doesn't move while scrolling */
     background-attachment: fixed;
     background-repeat: no-repeat;
@@ -115,7 +115,7 @@ body {
     right: 0;
     width: 450px;
     height: 100%;
-    background-color: #FFF3C4;
+    background-image: linear-gradient(to right top, #faf9e0, #eaecc1, #d8dfa3, #c4d286, #afc669);
     box-shadow: -4px 0 20px rgba(112, 59, 59, 0.2);
     transform: translateX(100%);
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -183,8 +183,8 @@ h5 {
 .basket-item {
     position: absolute;
     width: 250px;
-    background: #f5e4a8;
-    border: 1px solid #703B3B;
+    background: #f3f1b4;
+    opacity: 0.70;
     padding: 12px;
     font-size: 14px;
     color: #333;
@@ -195,7 +195,12 @@ h5 {
 
 .basket-item:hover {
     transition: 1s ease;
+    opacity: 1;
     box-shadow: 0 6px 18px rgba(0,0,0,0.15);
     z-index: 100;
+}
+
+.basket-item:not(:hover) {
+    transition: 1s ease;
 }
 
