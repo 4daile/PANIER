@@ -42,6 +42,164 @@ window.addEventListener("load", function() {
     positionItemsRandomly();
 });
 
+let isNuageView = true; // pour savoir dans quelle vue on est
+
+window.addEventListener("load", function() {
+    positionItemsRandomly();
+    initDragDropObjects();
+    initDragDropItems();
+    loadObjectPositions();
+});
+
+// ______________________________
+// COMPTEUR DE FRAGMENTS
+// ______________________________
+
+function updateFragmentCounter() {
+    const items = document.querySelectorAll(".basket-item");
+    const count = items.length;
+    const maxFragments = 500; // limite max pour la jauge (tu peux ajuster)
+    
+    // Met à jour le texte
+    const counterText = document.getElementById("fragment-count");
+    if (counterText) {
+        counterText.textContent = count;
+    }
+}
+
+// ______________________________
+// DRAG AND DROP POUR LES OBJETS (seulement en vue nuage)
+// ______________________________
+
+/*
+function initDragDropObjects() {
+    const objects = document.querySelectorAll(".objets img");
+    
+    objects.forEach((obj, index) => {
+        // Position initiale aléatoire si pas de position sauvegardée
+        const savedPos = localStorage.getItem(`object-${index}-position`);
+        if (savedPos) {
+            const position = JSON.parse(savedPos);
+            obj.style.left = position.left;
+            obj.style.top = position.top;
+        } else {
+            obj.style.left = `${Math.random() * (window.innerWidth - 150)}px`;
+            obj.style.top = `${Math.random() * (window.innerHeight - 150)}px`;
+        }
+        
+        let isDragging = false;
+        let offsetX, offsetY;
+        
+        obj.addEventListener("mousedown", function(e) {
+            if (!isNuageView) return; // drag seulement en vue nuage
+            
+            isDragging = true;
+            obj.classList.add("dragging");
+            
+            const rect = obj.getBoundingClientRect();
+            offsetX = e.clientX - rect.left;
+            offsetY = e.clientY - rect.top;
+            
+            e.preventDefault();
+            e.stopPropagation();
+        });
+        
+        document.addEventListener("mousemove", function(e) {
+            if (!isDragging) return;
+            
+            const x = e.clientX - offsetX;
+            const y = e.clientY - offsetY;
+            
+            // Limite dans la fenêtre
+            const maxX = window.innerWidth - obj.offsetWidth;
+            const maxY = window.innerHeight - obj.offsetHeight;
+            
+            obj.style.left = `${Math.max(0, Math.min(x, maxX))}px`;
+            obj.style.top = `${Math.max(0, Math.min(y, maxY))}px`;
+        });
+        
+        document.addEventListener("mouseup", function() {
+            if (isDragging) {
+                isDragging = false;
+                obj.classList.remove("dragging");
+                
+                // Sauvegarde la position
+                const position = {
+                    left: obj.style.left,
+                    top: obj.style.top
+                };
+                localStorage.setItem(`object-${index}-position`, JSON.stringify(position));
+            }
+        });
+    });
+}
+
+function loadObjectPositions() {
+    const objects = document.querySelectorAll(".objets img");
+    objects.forEach((obj, index) => {
+        const savedPos = localStorage.getItem(`object-${index}-position`);
+        if (savedPos) {
+            const position = JSON.parse(savedPos);
+            obj.style.left = position.left;
+            obj.style.top = position.top;
+        }
+    });
+}
+
+*/
+
+// ______________________________
+// DRAG AND DROP POUR LES ITEMS (seulement en vue nuage)
+// ______________________________
+
+function initDragDropItems() {
+    const items = document.querySelectorAll(".basket-item");
+    
+    items.forEach((item, index) => {
+        let isDragging = false;
+        let offsetX, offsetY;
+        
+        item.addEventListener("mousedown", function(e) {
+            if (!isNuageView) return; // drag seulement en vue nuage
+            
+            isDragging = true;
+            item.classList.add("dragging");
+            
+            const rect = item.getBoundingClientRect();
+            offsetX = e.clientX - rect.left;
+            offsetY = e.clientY - rect.top;
+            
+            e.preventDefault();
+        });
+        
+        document.addEventListener("mousemove", function(e) {
+            if (!isDragging) return;
+            
+            const container = document.getElementById("items-container");
+            const containerRect = container.getBoundingClientRect();
+            
+            const x = e.clientX - containerRect.left - offsetX;
+            const y = e.clientY - containerRect.top - offsetY;
+            
+            item.style.left = `${x}px`;
+            item.style.top = `${y}px`;
+        });
+        
+        document.addEventListener("mouseup", function() {
+            if (isDragging) {
+                isDragging = false;
+                item.classList.remove("dragging");
+                
+                // Sauvegarde la position de l'item
+                const position = {
+                    left: item.style.left,
+                    top: item.style.top
+                };
+                localStorage.setItem(`item-${index}-position`, JSON.stringify(position));
+            }
+        });
+    });
+}
 
 // ———————————————————————————————
 // POSITIONNEMENT ALÉATOIRE DES ITEMS = NUAGE VIEW
@@ -110,5 +268,4 @@ function arrangeItemsChronologically() {
         itemsContainer.appendChild(item);
     });
 }
-
 

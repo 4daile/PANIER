@@ -28,6 +28,47 @@ body {
        but for a fixed background it's not necessary to set the element as sticky. */
 }
 
+
+/** ________________ **/
+/* OBJETSS */
+/** ________________ **/
+
+/*
+.objets {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    pointer-events: none; /* permet de cliquer à travers sur les fragments 
+    z-index: 10;  derrière les fragments 
+}
+
+.objets img {
+    position: fixed;  fixed pour positionnement absolu sur l'écran 
+    width: 400px;  taille réduite des objets 
+    height: auto;
+    opacity: 0.6;
+    pointer-events: auto;  réactive les événements pour le drag 
+    cursor: grab;
+    transition: opacity 0.3s ease;
+    user-select: none;
+}
+
+.objets img:hover {
+    opacity: 0.9;
+}
+
+.objets img:active {
+    cursor: grabbing;
+}
+
+.objets img.dragging {
+    z-index: 500; au-dessus pendant le drag 
+}
+*/
+
+
 /** ________________ **/
 /* HEADER = BOUTONS FILTRES */
 /** ________________ **/
@@ -64,7 +105,7 @@ body {
     user-select: none;
     width: 8%;
     transition: 0.3s;
-
+    /*z-index: 1000;*/
 }
 
 .open:hover {
@@ -91,6 +132,25 @@ body {
     color: #84994F;
 }
 
+/** ________________ **/
+/* COMPTEUR DE FRAGMENTS */
+/** ________________ **/
+
+.fragment-counter {
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.counter-text {
+    font-size: 13px;
+    color: #703B3B;
+    font-weight: bold;
+}
+
 #panier {
     width: 100%;
     max-width: 200px;
@@ -113,7 +173,7 @@ body {
     position: fixed;
     top: 0;
     right: 0;
-    width: 450px;
+    width: 400px;
     height: 100%;
     background-image: linear-gradient(to right top, #faf9e0, #eaecc1, #d8dfa3, #c4d286, #afc669);
     box-shadow: -4px 0 20px rgba(112, 59, 59, 0.2);
@@ -178,6 +238,7 @@ h5 {
     padding: 50px;
     min-height: 100vh;
     position: relative;
+    z-index: 10; /* au-dessus des objets */
 }
 
 .basket-item {
