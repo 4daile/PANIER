@@ -49,6 +49,7 @@ window.addEventListener("load", function() {
     initDragDropObjects();
     initDragDropItems();
     loadObjectPositions();
+    
 });
 
 // ______________________________
