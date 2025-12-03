@@ -55,7 +55,6 @@ Suivez ces étapes simples pour installer PANIER sur votre ordinateur :
 2. **Explorez** vos fragments dans deux vues :
    - **Nuage view** : affichage aléatoire et visuel des fragments
    - **Collection view** : affichage chronologique de vos récoltes
-3. **Survolez** les fragments pour voir plus de détails (date, URL source)
 
 ### Options disponibles
 
