@@ -315,6 +315,16 @@ h5 {
 
     flex-wrap: wrap;
     cursor: pointer;
+
+    word-wrap: break-word;
+    overflow-wrap: break-word; /* moderne */
+    white-space: normal; /* permet le retour à la ligne */
+    max-width: 250px; /* si tes items ont une largeur fixe */
+}
+
+.basket-item p {
+    white-space: normal;
+    overflow-wrap: break-word;
 }
 
 .basket-item:hover {

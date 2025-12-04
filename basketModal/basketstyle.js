@@ -31,6 +31,7 @@ function closePanneau(){
 
 function clearBasket() {
     localStorage.removeItem("basketItems");
+    updateFragmentCounter();
     location.reload();
 }
 

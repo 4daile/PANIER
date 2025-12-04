@@ -5,7 +5,7 @@
 
 /* Configuration de la page pour impression */
 @page {
-    size: A5 landscape; /* Format A5 en paysage pour le leporello */
+    size: A5 portrait; /* Format A5 en portrait */
     margin: 0;
 }
 
@@ -28,8 +28,8 @@ body {
 
 /* Chaque page = un panneau du leporello */
 .page {
-    width: 148mm; /* Largeur A5 */
-    height: 210mm; /* Hauteur A5 */
+    width: 148mm; /* Largeur A5 en portrait */
+    height: 210mm; /* Hauteur A5 en portrait */
     page-break-after: always;
     page-break-inside: avoid;
     position: relative;
