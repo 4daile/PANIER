@@ -12,7 +12,7 @@
         "default_popup": "defaultPopup/index.html"
 	},
 	"icons": {
-    		"16": "SRC/img/ic0n_16.png",
+    		"16": "SRC/img/icon_16.png",
     		"32": "SRC/img/icon_32.png",
     		"48": "SRC/img/icon_48.png",
     		"128": "SRC/img/icon_128.png"

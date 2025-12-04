@@ -5,7 +5,7 @@
 
 body {
     font-family: "Kosugi", sans-serif;
-    background-color: #FFE797;
+    background-color: #f3f1b4;
     margin: 0;
     padding: 5px;
 
@@ -65,29 +65,27 @@ button {
 }
 
 #add-to-basket {
-    background-color: #FCB53B;
+    background-color: #CDCC88;
     border: #703B3B 1px solid;
     padding: 5px 15px;
     user-select: none;
 }
 
 #add-to-basket:hover {
-    background-color: #FFA500;
+    background-color: #AFC669;
     cursor: pointer;
-    box-shadow: #703B3B 2px 2px 5px;
 }
 
 #cancel-button {
-    background-color: #FFE797;
+    background-color: #f3f1b4;
     border: #703B3B 1px solid;
     padding: 5px 15px;
     user-select: none;
 }
 
 #cancel-button:hover {
-    background-color: #FFD966;
+    background-color: #FAF9E0;
     cursor: pointer;
-    box-shadow: #703B3B 2px 2px 5px;
     padding: 5px 15px;
 }
 
