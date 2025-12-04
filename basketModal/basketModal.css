@@ -89,6 +89,18 @@ body {
     user-select: none;
 }
 
+#nuage, #chrono {
+    
+    font-family: "Kosugi", sans-serif;
+    padding: 10px 15px;
+    background-color: #703B3B;
+    color: #FFE797;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
 /** ________________ **/
 /* PANNEAU D'INFOS */
 /** ________________ **/
