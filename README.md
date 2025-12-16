@@ -86,7 +86,7 @@ Pour plus de détails, consultez le fichier `LICENSE`.
 
 ---
 
-## 🔗 Ressources
+## ༊*·˚ Ressources
 
 - Repository GitHub : [4daile/PANIER](https://github.com/4daile/PANIER)
 - Documentation Chrome Extensions : [developer.chrome.com/docs/extensions](https://developer.chrome.com/docs/extensions)
