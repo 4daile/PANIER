@@ -26,7 +26,7 @@ L'interface intuitive et le système de rangement visuel offrent une expérience
 
 Suivez ces étapes simples pour installer PANIER sur votre ordinateur :
 
-1. **Téléchargez** le dossier `PANIER.zip` depuis le repository
+1. **Téléchargez** le dossier [PANIER.zip](https://github.com/4daile/PANIER/archive/refs/tags/v1.0.0.zip) depuis le repository
 2. **Extrayez** le dossier sur votre bureau personnel
 3. **Ouvrez** `chrome://extensions/` dans votre barre de recherche Chrome
 4. **Activez** le mode "Développeur" (en haut à droite)
