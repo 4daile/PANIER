@@ -76,6 +76,7 @@ body {
 .header {
     display: flex;
     flex-direction: row; 
+    justify-content: center;
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -84,19 +85,34 @@ body {
 .research-bar {
     padding: 20px;
     display: flex;
-    z-index: 1000;
+
+    user-select: none;
+}
+
+#search-input {
+    padding: 8px;
+    border: 1px solid #703B3B;
+    background-color: #CDCC88;
+    border-radius: 5px 0 0 5px;
+    width: 250px;
+    font-size: 14px;
+}
+
+#search-button {
+    padding: 8px 15px;
+    background-color: #703B3B;
+    color: #FFE797;
+    border: none;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    font-size: 14px;
 }
 
 .filtres {
+    display: flex;
     margin: auto;
     top: 20px;
-    display: flex;
-    flex-direction: row;
     gap: 10px;
-    z-index: 1000;
-
-    justify-content: center;
-    align-items: center;
 
     user-select: none;
 }
