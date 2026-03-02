@@ -192,3 +192,56 @@ function arrangeItemsChronologically() {
     });
 }
 
+// _____________________________
+// RECHERCHE DANS LE PANIER (RESEARCH BAR)
+// _____________________________
+
+// ______________________________
+// RECHERCHE
+// ______________________________
+
+let searchButton = document.getElementById("search-button");
+let searchInput = document.getElementById("search-input");
+
+searchButton.addEventListener("click", function() {
+    searchItems();
+});
+
+// Bonus : recherche aussi en appuyant sur Entrée
+searchInput.addEventListener("keydown", function(e) {
+    if (e.key === "Enter") searchItems();
+});
+
+function searchItems() {
+    const query = searchInput.value.trim().toLowerCase();
+    const items = document.querySelectorAll(".basket-item");
+
+    // Si la recherche est vide, on réaffiche tout et on remet la vue normale
+    if (query === "") {
+        items.forEach(item => item.style.display = "");
+        positionItemsRandomly(); // retour vue nuage
+        return;
+    }
+
+    // Passe en vue liste avant d'afficher les résultats
+    arrangeItemsChronologically();
+
+    // Filtre les items
+    items.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        if (text.includes(query)) {
+            item.style.display = ""; // visible
+        } else {
+            item.style.display = "none"; // caché
+        }
+        const originalText = item.querySelector("p").textContent;
+        const highlighted = originalText.replace(
+        new RegExp(query, "gi"), 
+        match => `<mark>${match}</mark>`
+        );
+        item.querySelector("p").innerHTML = highlighted;
+     });
+
+    // Dans ta boucle forEach, après avoir vérifié que l'item est visible :
+
+}

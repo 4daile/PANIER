@@ -90,6 +90,12 @@ body {
     user-select: none;
 }
 
+mark {
+    background-color: #FFE797;
+    color: #703B3B;
+    border-radius: 2px;
+}
+
 #search-input {
     padding: 8px;
     border: 1px solid #703B3B;
