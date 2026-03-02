@@ -35,6 +35,16 @@ function clearBasket() {
     location.reload();
 }
 
+function showAllItems() {
+    document.querySelectorAll(".basket-item").forEach(item => {
+        item.style.display = "";
+    // Supprime le surlignage en remettant le texte brut
+        item.querySelectorAll("mark").forEach(mark => {
+            mark.replaceWith(mark.textContent);
+        });
+    });
+}
+
 // ______________________________
 // LOADING BASKET 
 // ______________________________
@@ -132,7 +142,7 @@ let nuageButton = document.getElementById("nuage");
 nuageButton.addEventListener("click", positionItemsRandomly);
 
 function positionItemsRandomly() {
-
+    showAllItems();
     const itemsContainer = document.getElementById("items-container");
     const items = document.querySelectorAll(".basket-item");
 
@@ -165,7 +175,7 @@ let chronoButton = document.getElementById("chrono");
 chronoButton.addEventListener("click", arrangeItemsChronologically);
 
 function arrangeItemsChronologically() {
-
+    showAllItems();
     const itemsContainer = document.getElementById("items-container");
     const items = Array.from(document.querySelectorAll(".basket-item"));
     itemsContainer.style.position = "static"; // réinitialise le positionnement du conteneur
