@@ -47,7 +47,7 @@ let isNuageView = true; // pour savoir dans quelle vue on est
 
 window.addEventListener("load", function() {
     positionItemsRandomly();
-    initDragDropObjects();
+    //initDragDropObjects();
     initDragDropItems();
     loadObjectPositions();
     
