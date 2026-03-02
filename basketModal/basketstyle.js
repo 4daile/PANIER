@@ -69,91 +69,12 @@ function updateFragmentCounter() {
     }
 }
 
-// ______________________________
-// DRAG AND DROP POUR LES OBJETS (seulement en vue nuage)
-// ______________________________
 
-/*
-function initDragDropObjects() {
-    const objects = document.querySelectorAll(".objets img");
-    
-    objects.forEach((obj, index) => {
-        // Position initiale aléatoire si pas de position sauvegardée
-        const savedPos = localStorage.getItem(`object-${index}-position`);
-        if (savedPos) {
-            const position = JSON.parse(savedPos);
-            obj.style.left = position.left;
-            obj.style.top = position.top;
-        } else {
-            obj.style.left = `${Math.random() * (window.innerWidth - 150)}px`;
-            obj.style.top = `${Math.random() * (window.innerHeight - 150)}px`;
-        }
-        
-        let isDragging = false;
-        let offsetX, offsetY;
-        
-        obj.addEventListener("mousedown", function(e) {
-            if (!isNuageView) return; // drag seulement en vue nuage
-            
-            isDragging = true;
-            obj.classList.add("dragging");
-            
-            const rect = obj.getBoundingClientRect();
-            offsetX = e.clientX - rect.left;
-            offsetY = e.clientY - rect.top;
-            
-            e.preventDefault();
-            e.stopPropagation();
-        });
-        
-        document.addEventListener("mousemove", function(e) {
-            if (!isDragging) return;
-            
-            const x = e.clientX - offsetX;
-            const y = e.clientY - offsetY;
-            
-            // Limite dans la fenêtre
-            const maxX = window.innerWidth - obj.offsetWidth;
-            const maxY = window.innerHeight - obj.offsetHeight;
-            
-            obj.style.left = `${Math.max(0, Math.min(x, maxX))}px`;
-            obj.style.top = `${Math.max(0, Math.min(y, maxY))}px`;
-        });
-        
-        document.addEventListener("mouseup", function() {
-            if (isDragging) {
-                isDragging = false;
-                obj.classList.remove("dragging");
-                
-                // Sauvegarde la position
-                const position = {
-                    left: obj.style.left,
-                    top: obj.style.top
-                };
-                localStorage.setItem(`object-${index}-position`, JSON.stringify(position));
-            }
-        });
-    });
-}
-
-function loadObjectPositions() {
-    const objects = document.querySelectorAll(".objets img");
-    objects.forEach((obj, index) => {
-        const savedPos = localStorage.getItem(`object-${index}-position`);
-        if (savedPos) {
-            const position = JSON.parse(savedPos);
-            obj.style.left = position.left;
-            obj.style.top = position.top;
-        }
-    });
-}
-
-*/
 
 // ______________________________
 // DRAG AND DROP POUR LES ITEMS (seulement en vue nuage)
 // ______________________________
-
+/*
 function initDragDropItems() {
     const items = document.querySelectorAll(".basket-item");
     
@@ -201,7 +122,7 @@ function initDragDropItems() {
             }
         });
     });
-}
+}*/
 
 // ———————————————————————————————
 // POSITIONNEMENT ALÉATOIRE DES ITEMS = NUAGE VIEW
