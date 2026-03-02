@@ -69,13 +69,25 @@ body {
 }
 */
 
+/** ________________ **/
+/* HEADER = BOUTONS RESEARCH & FILTRES */
+/** ________________ **/
 
-/** ________________ **/
-/* HEADER = BOUTONS FILTRES */
-/** ________________ **/
+.header {
+    display: flex;
+    flex-direction: row; 
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.research-bar {
+    padding: 20px;
+    display: flex;
+    z-index: 1000;
+}
 
 .filtres {
-    position: sticky;
     margin: auto;
     top: 20px;
     display: flex;
