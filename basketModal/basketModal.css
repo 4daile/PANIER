@@ -18,15 +18,16 @@ body {
 }
 
 .panier {
-    background-image: url('/SRC/img/TEST7.png');
-    /* Keep background fixed to the viewport so it doesn't move while scrolling */
+    background-color: #eaecc1;
+   /* background-image: url('/SRC/img/TEST7.png');
+    Keep background fixed to the viewport so it doesn't move while scrolling
     background-attachment: fixed;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
-    min-height: 100vh; /* ensures the background covers the viewport */
-    /* If you still want the .panier element to stick to the top use position: sticky; top: 0;
-       but for a fixed background it's not necessary to set the element as sticky. */
+    min-height: 100vh;  ensures the background covers the viewport
+    If you still want the .panier element to stick to the top use position: sticky; top: 0;
+    but for a fixed background it's not necessary to set the element as sticky. */
 }
 
 
