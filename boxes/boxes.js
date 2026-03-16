@@ -141,10 +141,11 @@ function deleteBox(id, deleteFragments = false) {
     // Mise à jour des fragments liés
     const items = getBasketItems();
     const updatedItems = items.map(item => {
-        if (item.boxId !== id) return item;
-        if (deleteFragments) return null;       // on marquera pour suppression
-        return { ...item, boxId: null };        // on détache le fragment
-    }).filter(Boolean);                         // supprime les null si deleteFragments
+        const ids = item.boxIds || [];
+        if (!ids.includes(id)) return item;
+        if (deleteFragments) return null;
+        return { ...item, boxIds: ids.filter(bid => bid !== id) }; // on détache
+    }).filter(Boolean);
 
     saveBasketItems(updatedItems);
 
@@ -203,10 +204,11 @@ function reloadFragmentsIntoDOM() {
 }
 
 // ----------------------------
-// Lier un fragment à une boîte
+// Lier un fragment à une (ou plusieurs) boîte(s)
 // ----------------------------
-// Ajoute ou change le boxId d'un fragment existant.
-// index : position du fragment dans le tableau basketItems
+// fragmentIndex : position dans basketItems
+// boxId         : ID de la boîte à ajouter
+// Si la boîte est déjà dans boxIds, on ne la duplique pas.
 
 function assignFragmentToBox(fragmentIndex, boxId) {
     const items = getBasketItems();
@@ -216,7 +218,26 @@ function assignFragmentToBox(fragmentIndex, boxId) {
         return false;
     }
 
-    items[fragmentIndex].boxId = boxId;
+    const item = items[fragmentIndex];
+    const ids  = item.boxIds || [];
+    if (!ids.includes(boxId)) {
+        item.boxIds = [...ids, boxId];
+    }
+    saveBasketItems(items);
+    return true;
+}
+
+// ----------------------------
+// Retirer un fragment d'une boîte
+// ----------------------------
+
+function removeFragmentFromBox(fragmentIndex, boxId) {
+    const items = getBasketItems();
+
+    if (fragmentIndex < 0 || fragmentIndex >= items.length) return false;
+
+    const item  = items[fragmentIndex];
+    item.boxIds = (item.boxIds || []).filter(id => id !== boxId);
     saveBasketItems(items);
     return true;
 }
@@ -226,7 +247,7 @@ function assignFragmentToBox(fragmentIndex, boxId) {
 // ----------------------------
 
 function getFragmentsByBox(boxId) {
-    return getBasketItems().filter(item => item.boxId === boxId);
+    return getBasketItems().filter(item => (item.boxIds || []).includes(boxId));
 }
 
 // ----------------------------
@@ -234,7 +255,7 @@ function getFragmentsByBox(boxId) {
 // ----------------------------
 
 function getUnboxedFragments() {
-    return getBasketItems().filter(item => !item.boxId);
+    return getBasketItems().filter(item => !item.boxIds || item.boxIds.length === 0);
 }
 
 
@@ -308,10 +329,10 @@ function initTestData() {
 
     // Crée quelques fragments liés aux boîtes
     const items = [
-        { selection: "Le design est une forme de langage.", url: "https://example.com", date: new Date().toISOString(), boxId: b1.id },
-        { selection: "La mémoire est une reconstruction.", url: "https://example.com/2", date: new Date().toISOString(), boxId: b2.id },
-        { selection: "Fragment sans boîte, dans le panier général.", url: "https://example.com/3", date: new Date().toISOString(), boxId: null },
-        { selection: "Another random thought.", url: "https://example.com/4", date: new Date().toISOString(), boxId: b3.id },
+        { selection: "Le design est une forme de langage.", url: "https://example.com", date: new Date().toISOString(), boxIds: [b1.id] },
+        { selection: "La mémoire est une reconstruction.", url: "https://example.com/2", date: new Date().toISOString(), boxIds: [b2.id] },
+        { selection: "Fragment dans deux boîtes.", url: "https://example.com/3", date: new Date().toISOString(), boxIds: [b1.id, b3.id] },
+        { selection: "Fragment sans boîte.", url: "https://example.com/4", date: new Date().toISOString(), boxIds: [] },
     ];
     saveBasketItems(items);
 

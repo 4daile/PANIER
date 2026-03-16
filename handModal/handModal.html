@@ -1,31 +1,60 @@
-<html>
-	<head>
-		<link rel="stylesheet" href="handModal.css" />
-	</head>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PANIER</title>
+    <link rel="stylesheet" href="handModal.css" />
+</head>
+<body>
+    <div class="mainbox">
 
-	<body>
-	<div class="mainbox">
-			<div id="cel1">
-				<div id="txt">
-					<input type="text" id="selected-text" placeholder="Texte sélectionné" />
-				</div>
-				<div id="buttons">
-					<button type="submit" id="add-to-basket">Ajouter au panier</button>
-					<button type="button" id="cancel-button">Annuler</button>
-				</div>
-			</div>
+        <!-- Titre -->
+        <h1 class="modal-header">PANIER</h1>
 
-			<div id="cel2">
-				<input type="text" id="page-url" placeholder="URL de la page" />
-			</div>
-			<div id="cel3">
-				<input type="text" id="date" placeholder="Date" />
-			</div>
+        <!-- Texte sélectionné -->
+        <div id="cel1">
+            <input type="text" id="selected-text" placeholder="Texte sélectionné" />
+        </div>
 
-		</div>
+        <!-- Sélection de boîte -->
+        <div id="box-section">
+            <p id="box-section-title" class="box-section-title">ENREGISTRER DANS LA BOÎTE</p>
 
-		<script src="handModal.js"></script>
-		<script src="/boxes/boxes.js"></script>
-		<script src="/boxes/boxView.js"></script>
-	</body>
+            <!-- Liste des boîtes existantes (générée par JS) -->
+            <div id="box-list"></div>
+
+            <!-- Bouton créer une nouvelle boîte -->
+            <button id="create-box-btn" class="create-box-btn">
+                <span class="create-box-icon">+</span> Créer
+            </button>
+
+            <!-- Formulaire inline création -->
+            <div id="new-box-form" style="display:none;">
+                <input type="text" id="new-box-name" class="new-box-input" placeholder="Nom de la boîte..." maxlength="40" />
+                <button id="new-box-confirm" class="new-box-confirm">✓</button>
+                <button id="new-box-cancel"  class="new-box-cancel">✕</button>
+            </div>
+        </div>
+
+        <!-- Champs cachés -->
+        <div id="cel2" style="display:none;">
+            <input type="text" id="page-url" placeholder="URL de la page" />
+        </div>
+        <div id="cel3" style="display:none;">
+            <input type="text" id="date" placeholder="Date" />
+        </div>
+
+        <!-- Boutons d'action -->
+        <div id="buttons">
+            <button type="button"  id="cancel-button">ANNULER</button>
+            <button type="submit"  id="add-to-basket">AJOUTER AU PANIER</button>
+        </div>
+
+    </div>
+
+    <!-- boxes.js DOIT être chargé avant handModal.js -->
+    <script src="boxes.js"></script>
+    <script src="handModal.js"></script>
+</body>
 </html>
