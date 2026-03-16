@@ -212,6 +212,8 @@ function arrangeItemsChronologically() {
 
 let searchButton = document.getElementById("search-button");
 let searchInput = document.getElementById("search-input");
+let searchTagsContainer = document.getElementById("search-tags");
+let currentSearchQuery = null; // Stocke la requête actuelle
 
 searchButton.addEventListener("click", function() {
     searchItems();
@@ -222,36 +224,88 @@ searchInput.addEventListener("keydown", function(e) {
     if (e.key === "Enter") searchItems();
 });
 
+function createSearchTags(words) {
+    // Vide le conteneur
+    searchTagsContainer.innerHTML = "";
+    
+    // Crée un tag pour chaque mot
+    words.forEach(word => {
+        const tag = document.createElement("span");
+        tag.className = "search-tag";
+        tag.innerHTML = `${word} <button class="tag-close" data-word="${word}">✕</button>`;
+        
+        // Ajoute l'événement pour supprimer le tag
+        tag.querySelector(".tag-close").addEventListener("click", function() {
+            clearSearch();
+        });
+        
+        searchTagsContainer.appendChild(tag);
+    });
+}
+
+function clearSearch() {
+    searchInput.value = "";
+    searchTagsContainer.innerHTML = "";
+    currentSearchQuery = null;
+    
+    // Réaffiche tous les items et revient à la vue nuage
+    document.querySelectorAll(".basket-item").forEach(item => {
+        item.style.display = "";
+        item.querySelectorAll("mark").forEach(mark => {
+            mark.replaceWith(mark.textContent);
+        });
+    });
+    
+    positionItemsRandomly();
+}
+
 function searchItems() {
     const query = searchInput.value.trim().toLowerCase();
     const items = document.querySelectorAll(".basket-item");
 
     // Si la recherche est vide, on réaffiche tout et on remet la vue normale
     if (query === "") {
+        searchTagsContainer.innerHTML = "";
         items.forEach(item => item.style.display = "");
         positionItemsRandomly(); // retour vue nuage
         return;
     }
 
+    // Stocke la requête réelle
+    currentSearchQuery = query;
+
     // Passe en vue liste avant d'afficher les résultats
     arrangeItemsChronologically();
+
+    // Divise la requête en mots
+    const queryWords = query.split(/\s+/).filter(word => word.length > 0);
+    
+    // Crée les tags de recherche
+    createSearchTags(queryWords);
 
     // Filtre les items
     items.forEach(item => {
         const text = item.textContent.toLowerCase();
-        if (text.includes(query)) {
+        
+        // Vérifie si tous les mots de la requête sont présents comme des mots complets
+        const allWordsFound = queryWords.every(word => {
+            const wordRegex = new RegExp(`\\b${word}\\b`);
+            return wordRegex.test(text);
+        });
+
+        if (allWordsFound) {
             item.style.display = ""; // visible
         } else {
             item.style.display = "none"; // caché
         }
+
         const originalText = item.querySelector("p").textContent;
-        const highlighted = originalText.replace(
-        new RegExp(query, "gi"), 
-        match => `<mark>${match}</mark>`
-        );
+        // Surligne tous les mots de la requête
+        let highlighted = originalText;
+        queryWords.forEach(word => {
+            const regex = new RegExp(`\\b${word}\\b`, "gi");
+            highlighted = highlighted.replace(regex, match => `<mark>${match}</mark>`);
+        });
         item.querySelector("p").innerHTML = highlighted;
-     });
-
-    // Dans ta boucle forEach, après avoir vérifié que l'item est visible :
-
+    });
 }
