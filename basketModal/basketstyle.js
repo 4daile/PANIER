@@ -142,6 +142,7 @@ let nuageButton = document.getElementById("nuage");
 nuageButton.addEventListener("click", positionItemsRandomly);
 
 function positionItemsRandomly() {
+    reloadFragmentsIntoDOM(); 
     showAllItems();
     const itemsContainer = document.getElementById("items-container");
     const items = document.querySelectorAll(".basket-item");
@@ -175,6 +176,7 @@ let chronoButton = document.getElementById("chrono");
 chronoButton.addEventListener("click", arrangeItemsChronologically);
 
 function arrangeItemsChronologically() {
+    reloadFragmentsIntoDOM(); 
     showAllItems();
     const itemsContainer = document.getElementById("items-container");
     const items = Array.from(document.querySelectorAll(".basket-item"));

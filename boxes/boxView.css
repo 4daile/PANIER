@@ -1,0 +1,319 @@
+/** ============================================================
+    BOXVIEW.CSS — Styles pour la vue boîtes de PANIER
+    À importer dans basketModal.html après basketModal.css
+    ============================================================ */
+
+
+/** ______________________________
+    CARTES DE BOÎTES (vue grille)
+    ______________________________ */
+
+.box-card {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.box-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(112, 59, 59, 0.15);
+}
+
+.box-cover {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    position: relative;
+    border-radius: 2px;
+}
+
+.box-favorite-star {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    font-size: 16px;
+    color: #FFE797;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.box-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 10px 2px 0 2px;
+}
+
+.box-name {
+    font-family: "Kosugi", sans-serif;
+    font-size: 14px;
+    color: #333;
+    font-weight: bold;
+}
+
+.box-meta {
+    font-family: "Kosugi", sans-serif;
+    font-size: 11px;
+    color: #999;
+}
+
+.empty-message {
+    font-family: "Kosugi", sans-serif;
+    font-size: 13px;
+    color: #999;
+    text-align: center;
+    margin-top: 60px;
+    width: 100%;
+}
+
+
+/** ______________________________
+    VUE DÉTAIL D'UNE BOÎTE
+    ______________________________ */
+
+.box-back-btn {
+    font-family: "Kosugi", sans-serif;
+    background: none;
+    border: none;
+    color: #703B3B;
+    font-size: 13px;
+    cursor: pointer;
+    padding: 0;
+    margin-bottom: 20px;
+    text-decoration: underline;
+}
+
+.box-back-btn:hover {
+    color: #84994F;
+}
+
+.box-detail-header {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+}
+
+.box-detail-title-block {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.box-detail-name {
+    font-family: "Kosugi", sans-serif;
+    font-size: 28px;
+    font-weight: normal;
+    color: #333;
+    margin: 0 0 5px 0;
+}
+
+.box-detail-desc {
+    font-family: "Kosugi", sans-serif;
+    font-size: 13px;
+    color: #666;
+    margin: 0 0 5px 0;
+}
+
+.box-detail-cover {
+    width: 100%;
+    height: 200px;
+    border-radius: 2px;
+    margin-bottom: 30px;
+}
+
+.box-detail-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.box-action-btn {
+    font-family: "Kosugi", sans-serif;
+    font-size: 11px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background: #f3f1b4;
+    color: #333;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.box-action-btn:hover {
+    background: #eaecc1;
+}
+
+.box-action-btn--delete {
+    border-color: #D34E4E;
+    color: #D34E4E;
+    background: transparent;
+}
+
+.box-action-btn--delete:hover {
+    background: #D34E4E;
+    color: white;
+}
+
+.box-fragments-grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.box-fragments-grid .basket-item {
+    position: static !important; /* annule le positionnement absolu */
+}
+
+
+/** ______________________________
+    MODALE MODIFIER
+    ______________________________ */
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-box {
+    background: #f3f1b4;
+    padding: 40px;
+    width: 420px;
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow-y: auto;
+    border-radius: 2px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.modal-title {
+    font-family: "Kosugi", sans-serif;
+    font-size: 24px;
+    font-weight: normal;
+    color: #333;
+    margin: 0;
+}
+
+.modal-sep {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 5px 0;
+}
+
+.modal-label {
+    font-family: "Kosugi", sans-serif;
+    font-size: 12px;
+    color: #703B3B;
+    text-transform: uppercase;
+    margin-top: 5px;
+}
+
+.modal-input {
+    font-family: "Kosugi", sans-serif;
+    padding: 8px;
+    border: 1px solid #ccc;
+    background: #faf9e0;
+    border-radius: 4px;
+    font-size: 13px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.modal-textarea {
+    font-family: "Kosugi", sans-serif;
+    padding: 8px;
+    border: 1px solid #ccc;
+    background: #faf9e0;
+    border-radius: 4px;
+    font-size: 13px;
+    width: 100%;
+    box-sizing: border-box;
+    height: 90px;
+    resize: vertical;
+}
+
+.modal-colors {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+}
+
+.color-dot {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border-color 0.15s;
+}
+
+.color-dot.selected,
+.color-dot:hover {
+    border-color: #703B3B;
+}
+
+.modal-footer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.modal-footer--right {
+    justify-content: flex-end;
+}
+
+.modal-warning {
+    font-family: "Kosugi", sans-serif;
+    font-size: 11px;
+    color: #D34E4E;
+}
+
+.modal-btn {
+    font-family: "Kosugi", sans-serif;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.modal-btn--delete {
+    border: 1px solid #703B3B;
+    background: transparent;
+    color: #703B3B;
+}
+
+.modal-btn--delete:hover {
+    background: #703B3B;
+    color: #faf9e0;
+}
+
+.modal-btn--cancel {
+    border: 1px solid #ccc;
+    background: transparent;
+    color: #666;
+}
+
+.modal-btn--cancel:hover {
+    background: #eaecc1;
+}
+
+.modal-btn--save {
+    border: none;
+    background: #703B3B;
+    color: #FFE797;
+}
+
+.modal-btn--save:hover {
+    background: #5a2e2e;
+}
