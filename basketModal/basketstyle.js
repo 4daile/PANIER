@@ -263,51 +263,39 @@ function clearSearch() {
 
 function searchItems() {
     const query = searchInput.value.trim().toLowerCase();
-    const items = document.querySelectorAll(".basket-item");
 
-    // Si la recherche est vide, on réaffiche tout et on remet la vue normale
     if (query === "") {
         searchTagsContainer.innerHTML = "";
-        items.forEach(item => item.style.display = "");
-        positionItemsRandomly(); // retour vue nuage
+        positionItemsRandomly();
         return;
     }
 
-    // Stocke la requête réelle
     currentSearchQuery = query;
 
-    // Passe en vue liste avant d'afficher les résultats
+    // D'abord on réorganise — ça recrée les items dans le DOM
     arrangeItemsChronologically();
 
-    // Divise la requête en mots
+    // ENSUITE seulement on récupère les items et on filtre
+    const items = document.querySelectorAll(".basket-item");
     const queryWords = query.split(/\s+/).filter(word => word.length > 0);
-    
-    // Crée les tags de recherche
     createSearchTags(queryWords);
 
-    // Filtre les items
     items.forEach(item => {
         const text = item.textContent.toLowerCase();
-        
-        // Vérifie si tous les mots de la requête sont présents comme des mots complets
         const allWordsFound = queryWords.every(word => {
-            const wordRegex = new RegExp(`\\b${word}\\b`);
-            return wordRegex.test(text);
+            return new RegExp(`\\b${word}\\b`).test(text);
         });
+
+        item.style.display = allWordsFound ? "" : "none";
 
         if (allWordsFound) {
-            item.style.display = ""; // visible
-        } else {
-            item.style.display = "none"; // caché
+            const originalText = item.querySelector("p").textContent;
+            let highlighted = originalText;
+            queryWords.forEach(word => {
+                const regex = new RegExp(`\\b${word}\\b`, "gi");
+                highlighted = highlighted.replace(regex, match => `<mark>${match}</mark>`);
+            });
+            item.querySelector("p").innerHTML = highlighted;
         }
-
-        const originalText = item.querySelector("p").textContent;
-        // Surligne tous les mots de la requête
-        let highlighted = originalText;
-        queryWords.forEach(word => {
-            const regex = new RegExp(`\\b${word}\\b`, "gi");
-            highlighted = highlighted.replace(regex, match => `<mark>${match}</mark>`);
-        });
-        item.querySelector("p").innerHTML = highlighted;
     });
 }

@@ -315,12 +315,39 @@ function openEditBoxModal(boxId) {
     });
 
     // Image de couverture
-    let newCover = box.cover;
-    overlay.querySelector("#edit-box-cover").addEventListener("change", function () {
-        readCoverImage(this, function (base64) {
-            newCover = base64;
-        });
-    });
+let newCover = box.cover;
+
+// Aperçu de l'image actuelle
+const preview = document.createElement("div");
+preview.id = "cover-preview";
+preview.style.cssText = `
+    width: 100%; height: 80px;
+    background-size: cover; background-position: center;
+    border-radius: 2px; margin-bottom: 8px;
+    background-color: ${box.color};
+`;
+if (box.cover) preview.style.backgroundImage = `url(${box.cover})`;
+
+// Insère l'aperçu avant l'input file
+const fileInput = overlay.querySelector("#edit-box-cover");
+fileInput.parentNode.insertBefore(preview, fileInput);
+
+fileInput.addEventListener("change", function () {
+    const file = this.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        newCover = e.target.result;
+        preview.style.backgroundImage = `url(${newCover})`;
+        preview.style.backgroundColor = "";
+        console.log("Image chargée ✓", newCover.substring(0, 40));
+    };
+    reader.onerror = function() {
+        console.error("Erreur lecture fichier");
+    };
+    reader.readAsDataURL(file);
+});
 
     // Annuler
     overlay.querySelector("#edit-box-cancel").addEventListener("click", function () {
