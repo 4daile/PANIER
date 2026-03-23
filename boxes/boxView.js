@@ -1,5 +1,6 @@
 // ============================================================
 // BOXVIEW.JS — Vue boîtes pour PANIER
+// Zéro style inline — tout est dans boxView.css
 // ============================================================
 
 let currentBoxId = null;
@@ -41,14 +42,8 @@ function reloadFragmentsIntoDOM() {
 
 function arrangeItemsByBox() {
     const itemsContainer = document.getElementById("items-container");
-
     itemsContainer.innerHTML = "";
-    itemsContainer.style.position = "static";
-    itemsContainer.style.display = "grid";
-    itemsContainer.style.gridTemplateColumns = "repeat(auto-fill, minmax(220px, 1fr))";
-    itemsContainer.style.gap = "20px";
-    itemsContainer.style.padding = "40px";
-    itemsContainer.style.alignItems = "start";
+    itemsContainer.className = "container--grid"; // ← classe CSS, pas de style inline
 
     const boxes = getSortedBoxes();
 
@@ -57,10 +52,7 @@ function arrangeItemsByBox() {
         return;
     }
 
-    boxes.forEach(box => {
-        const card = createBoxCard(box);
-        itemsContainer.appendChild(card);
-    });
+    boxes.forEach(box => itemsContainer.appendChild(createBoxCard(box)));
 }
 
 // ______________________________
@@ -77,24 +69,18 @@ function createBoxCard(box) {
     card.classList.add("box-card");
     card.dataset.boxId = box.id;
 
-    // Visuel : image de couverture ou couleur
+    // Visuel — classe de base + variante selon cover ou couleur
     const cover = document.createElement("div");
     cover.classList.add("box-cover");
 
-    // ← FIX : hauteur explicite pour que l'image soit visible
-    cover.style.width           = "100%";
-    cover.style.aspectRatio     = "3 / 3";
-    cover.style.backgroundSize  = "cover";
-    cover.style.backgroundPosition = "center";
-    cover.style.borderRadius    = "8px";
-
     if (box.cover) {
-        cover.style.backgroundImage = `url(${box.cover})`;
+        cover.classList.add("box-cover--image");
+        cover.style.backgroundImage = `url(${box.cover})`; // seul style inline inévitable (url dynamique)
     } else {
-        cover.style.backgroundColor = box.color;
+        cover.classList.add("box-cover--color");
+        cover.style.backgroundColor = box.color; // seul style inline inévitable (couleur dynamique)
     }
 
-    // Étoile favori
     if (box.favorite) {
         const star = document.createElement("span");
         star.classList.add("box-favorite-star");
@@ -102,7 +88,6 @@ function createBoxCard(box) {
         cover.appendChild(star);
     }
 
-    // Infos texte
     const info = document.createElement("div");
     info.classList.add("box-info");
     info.innerHTML = `
@@ -132,9 +117,7 @@ function showBoxDetail(boxId) {
     const itemsContainer = document.getElementById("items-container");
 
     itemsContainer.innerHTML = "";
-    itemsContainer.style.position = "static";
-    itemsContainer.style.display  = "block";
-    itemsContainer.style.padding  = "40px";
+    itemsContainer.className = "container--detail"; // ← classe CSS, pas de style inline
 
     // — Bouton retour —
     const backBtn = document.createElement("button");
@@ -146,19 +129,20 @@ function showBoxDetail(boxId) {
     });
     itemsContainer.appendChild(backBtn);
 
-    // — Layout côte à côte : visuel gauche | infos droite —
+    // — Layout côte à côte —
     const topRow = document.createElement("div");
     topRow.classList.add("box-detail-top-row");
 
     // Visuel (image ou carré coloré)
     const visual = document.createElement("div");
     visual.classList.add("box-detail-visual");
-    visual.style.backgroundSize     = "cover";
-    visual.style.backgroundPosition = "center";
+
     if (box.cover) {
-        visual.style.backgroundImage = `url(${box.cover})`;
+        visual.classList.add("box-detail-visual--image");
+        visual.style.backgroundImage = `url(${box.cover})`; // url dynamique = inévitable
     } else {
-        visual.style.backgroundColor = box.color;
+        visual.classList.add("box-detail-visual--color");
+        visual.style.backgroundColor = box.color; // couleur dynamique = inévitable
     }
 
     // Bloc infos
@@ -175,17 +159,14 @@ function showBoxDetail(boxId) {
         <span class="box-meta">${count} fragment${count !== 1 ? "s" : ""} · ${date}</span>
     `;
 
-    // Boutons modifier / supprimer
+    // Boutons actions
     const actions = document.createElement("div");
     actions.classList.add("box-detail-actions");
 
     const editBtn = document.createElement("button");
     editBtn.classList.add("box-action-btn");
     editBtn.textContent = "modifier";
-    editBtn.addEventListener("click", function (e) {
-        e.stopPropagation();
-        openEditBoxModal(boxId);
-    });
+    editBtn.addEventListener("click", e => { e.stopPropagation(); openEditBoxModal(boxId); });
 
     const deleteBtn = document.createElement("button");
     deleteBtn.classList.add("box-action-btn", "box-action-btn--delete");
@@ -202,7 +183,6 @@ function showBoxDetail(boxId) {
     actions.appendChild(editBtn);
     actions.appendChild(deleteBtn);
     infoBlock.appendChild(actions);
-
     topRow.appendChild(visual);
     topRow.appendChild(infoBlock);
     itemsContainer.appendChild(topRow);
@@ -240,7 +220,6 @@ function openEditBoxModal(boxId) {
     const existing = document.getElementById("edit-box-modal");
     if (existing) existing.remove();
 
-    // ← utilise un <dialog> natif au lieu d'un div
     const overlay = document.createElement("dialog");
     overlay.id = "edit-box-modal";
     overlay.classList.add("modal-overlay");
@@ -257,13 +236,7 @@ function openEditBoxModal(boxId) {
             <textarea class="modal-textarea" id="edit-box-desc">${box.description}</textarea>
 
             <label class="modal-label">Image de couverture</label>
-            <div id="cover-preview" style="
-                width:100%; height:80px;
-                background-size:cover; background-position:center;
-                border-radius:2px; margin-bottom:8px;
-                background-color:${box.color};
-                ${box.cover ? `background-image:url(${box.cover});` : ''}
-            "></div>
+            <div id="cover-preview" class="cover-preview ${box.cover ? "cover-preview--image" : "cover-preview--color"}"></div>
             <input class="modal-input" id="edit-box-cover" type="file" accept="image/*" />
 
             <label class="modal-label">Couleur</label>
@@ -287,31 +260,38 @@ function openEditBoxModal(boxId) {
         </div>
     `;
 
-document.body.appendChild(overlay);
-    overlay.showModal(); // ← ouvre le dialog natif
+    document.body.appendChild(overlay);
+    overlay.showModal();
 
-    // Clic en dehors = ferme
-    overlay.addEventListener("click", function (e) {
-        if (e.target === overlay) overlay.close();
-    });
-    overlay.addEventListener("close", () => overlay.remove());
+    // Applique les valeurs dynamiques sur l'aperçu
+    const preview = overlay.querySelector("#cover-preview");
+    if (box.cover) {
+        preview.style.backgroundImage = `url(${box.cover})`;
+    } else {
+        preview.style.backgroundColor = box.color;
+    }
+
+    // Sélection couleur
     let selectedColor = box.color;
     overlay.querySelectorAll(".color-dot").forEach(dot => {
         dot.addEventListener("click", function () {
             overlay.querySelectorAll(".color-dot").forEach(d => d.classList.remove("selected"));
             this.classList.add("selected");
             selectedColor = this.dataset.color;
+            if (!newCover) {
+                preview.style.backgroundColor = selectedColor;
+                preview.style.backgroundImage = "";
+            }
         });
     });
 
-    let newCover = box.cover;
-    const preview = overlay.querySelector("#cover-preview");
-
+    // Image de couverture
+    let newCover = box.cover || null;
     overlay.querySelector("#edit-box-cover").addEventListener("change", function () {
         const file = this.files[0];
         if (!file) return;
         const reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = e => {
             newCover = e.target.result;
             preview.style.backgroundImage = `url(${newCover})`;
             preview.style.backgroundColor = "";
@@ -319,25 +299,26 @@ document.body.appendChild(overlay);
         reader.readAsDataURL(file);
     });
 
-    overlay.querySelector("#edit-box-cancel").addEventListener("click", () => overlay.remove());
+    overlay.querySelector("#edit-box-cancel").addEventListener("click", () => overlay.close());
 
     overlay.querySelector("#edit-box-save").addEventListener("click", function () {
         const newName = overlay.querySelector("#edit-box-name").value.trim();
         const newDesc = overlay.querySelector("#edit-box-desc").value.trim();
         if (!newName) { alert("Le nom est obligatoire."); return; }
         updateBox(boxId, { name: newName, description: newDesc, color: selectedColor, cover: newCover });
-        overlay.remove();
+        overlay.close();
         showBoxDetail(boxId);
     });
 
     overlay.querySelector("#edit-box-delete").addEventListener("click", function () {
         if (confirm(`Supprimer la boîte "${box.name}" ?`)) {
             deleteBox(boxId);
-            overlay.remove();
+            overlay.close();
             currentBoxId = null;
             arrangeItemsByBox();
         }
     });
 
-    overlay.addEventListener("click", e => { if (e.target === overlay) overlay.remove(); });
+    overlay.addEventListener("click", e => { if (e.target === overlay) overlay.close(); });
+    overlay.addEventListener("close", () => overlay.remove());
 }
