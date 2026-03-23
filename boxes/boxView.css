@@ -32,14 +32,13 @@
 
 .box-card {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .box-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(112, 59, 59, 0.15);
+    cursor: pointer;
 }
 
 /* Visuel de la carte */
@@ -49,6 +48,11 @@
     position: relative;
     border-radius: 4px;
     overflow: hidden;
+}
+
+.box-cover:hover {
+    opacity: calc(80%);
+    transition: opacity 0.30s;
 }
 
 .box-cover--image {
