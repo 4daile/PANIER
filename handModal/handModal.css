@@ -25,7 +25,8 @@ body {
 .mainbox {
     background-color: #f3f1b4;
     width: 100%;
-    max-width: 520px;
+    max-width: 370px;
+    max-height: 500px;
     padding: 28px 32px 24px;
     display: flex;
     flex-direction: column;
@@ -100,7 +101,7 @@ body {
     cursor: pointer;
     padding: 4px 2px;
     border-radius: 3px;
-    transition: background 0.15s;
+    transition: 0.15s;
 }
 
 .box-row:hover {
@@ -183,7 +184,7 @@ body {
     cursor: pointer;
     font-size: 13px;
     flex-shrink: 0;
-    transition: background 0.15s;
+    transition: 0.15s;
 }
 
 .new-box-confirm {
@@ -227,7 +228,7 @@ body {
     font-size: 12px;
     letter-spacing: 0.06em;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: 0.2s;
 }
 
 #cancel-button {
