@@ -1,20 +1,8 @@
 // ============================================================
 // BOXVIEW.JS — Vue boîtes pour PANIER
 // ============================================================
-// À inclure dans basketModal.html APRÈS boxes.js et basketstyle.js
-// <script src="boxes.js"></script>
-// <script src="basketstyle.js"></script>
-// <script src="boxview.js"></script>
-// ============================================================
 
-
-// ______________________________
-// ÉTAT DE NAVIGATION
-// ______________________________
-// Garde en mémoire si on est dans une boîte ou dans la vue grille
-
-let currentBoxId = null; // null = vue grille, string = vue détail d'une boîte
-
+let currentBoxId = null;
 
 // ______________________________
 // BOUTON BOÎTE
@@ -26,15 +14,9 @@ boxButton.addEventListener("click", function () {
     arrangeItemsByBox();
 });
 
-
 // ______________________________
-// RECHARGEMENT DES FRAGMENTS DEPUIS LE LOCALSTORAGE
+// RECHARGEMENT DES FRAGMENTS
 // ______________________________
-// Quand on revient de la vue boîte vers nuage ou liste,
-// le container a été vidé par showBoxDetail().
-// Cette fonction recrée tous les .basket-item dans le DOM
-// avant que positionItemsRandomly() ou arrangeItemsChronologically()
-// ne les manipulent.
 
 function reloadFragmentsIntoDOM() {
     const itemsContainer = document.getElementById("items-container");
@@ -53,7 +35,6 @@ function reloadFragmentsIntoDOM() {
     });
 }
 
-
 // ______________________________
 // VUE GRILLE — toutes les boîtes
 // ______________________________
@@ -61,7 +42,6 @@ function reloadFragmentsIntoDOM() {
 function arrangeItemsByBox() {
     const itemsContainer = document.getElementById("items-container");
 
-    // Réinitialise le conteneur
     itemsContainer.innerHTML = "";
     itemsContainer.style.position = "static";
     itemsContainer.style.display = "grid";
@@ -70,7 +50,7 @@ function arrangeItemsByBox() {
     itemsContainer.style.padding = "40px";
     itemsContainer.style.alignItems = "start";
 
-    const boxes = getSortedBoxes(); // favoris en premier, puis par date
+    const boxes = getSortedBoxes();
 
     if (boxes.length === 0) {
         itemsContainer.innerHTML = `<p class="empty-message">Aucune boîte pour l'instant.</p>`;
@@ -82,7 +62,6 @@ function arrangeItemsByBox() {
         itemsContainer.appendChild(card);
     });
 }
-
 
 // ______________________________
 // CARTE D'UNE BOÎTE
@@ -101,10 +80,16 @@ function createBoxCard(box) {
     // Visuel : image de couverture ou couleur
     const cover = document.createElement("div");
     cover.classList.add("box-cover");
+
+    // ← FIX : hauteur explicite pour que l'image soit visible
+    cover.style.width           = "100%";
+    cover.style.aspectRatio     = "4 / 3";
+    cover.style.backgroundSize  = "cover";
+    cover.style.backgroundPosition = "center";
+    cover.style.borderRadius    = "2px";
+
     if (box.cover) {
         cover.style.backgroundImage = `url(${box.cover})`;
-        cover.style.backgroundSize  = "cover";
-        cover.style.backgroundPosition = "center";
     } else {
         cover.style.backgroundColor = box.color;
     }
@@ -129,7 +114,6 @@ function createBoxCard(box) {
     card.appendChild(cover);
     card.appendChild(info);
 
-    // Clic → vue détail
     card.addEventListener("click", function () {
         currentBoxId = box.id;
         showBoxDetail(box.id);
@@ -137,7 +121,6 @@ function createBoxCard(box) {
 
     return card;
 }
-
 
 // ______________________________
 // VUE DÉTAIL — fragments d'une boîte
@@ -148,17 +131,12 @@ function showBoxDetail(boxId) {
     const fragments = getFragmentsByBox(boxId);
     const itemsContainer = document.getElementById("items-container");
 
-    // Réinitialise le conteneur
     itemsContainer.innerHTML = "";
     itemsContainer.style.position = "static";
     itemsContainer.style.display  = "block";
     itemsContainer.style.padding  = "40px";
 
-    // — En-tête de la boîte —
-    const header = document.createElement("div");
-    header.classList.add("box-detail-header");
-
-    // Bouton retour
+    // — Bouton retour —
     const backBtn = document.createElement("button");
     backBtn.classList.add("box-back-btn");
     backBtn.textContent = "← retour";
@@ -166,23 +144,38 @@ function showBoxDetail(boxId) {
         currentBoxId = null;
         arrangeItemsByBox();
     });
+    itemsContainer.appendChild(backBtn);
 
-    // Titre + meta
-    const titleBlock = document.createElement("div");
-    titleBlock.classList.add("box-detail-title-block");
+    // — Layout côte à côte : visuel gauche | infos droite —
+    const topRow = document.createElement("div");
+    topRow.classList.add("box-detail-top-row");
 
+    // Visuel (image ou carré coloré)
+    const visual = document.createElement("div");
+    visual.classList.add("box-detail-visual");
+    visual.style.backgroundSize     = "cover";
+    visual.style.backgroundPosition = "center";
+    if (box.cover) {
+        visual.style.backgroundImage = `url(${box.cover})`;
+    } else {
+        visual.style.backgroundColor = box.color;
+    }
+
+    // Bloc infos
     const count = countFragmentsByBox(boxId);
     const date  = new Date(box.createdAt).toLocaleDateString("fr-FR", {
         day: "2-digit", month: "long", year: "numeric"
     });
 
-    titleBlock.innerHTML = `
+    const infoBlock = document.createElement("div");
+    infoBlock.classList.add("box-detail-info-block");
+    infoBlock.innerHTML = `
         <h2 class="box-detail-name">${box.name}</h2>
         ${box.description ? `<p class="box-detail-desc">${box.description}</p>` : ""}
         <span class="box-meta">${count} fragment${count !== 1 ? "s" : ""} · ${date}</span>
     `;
 
-    // Actions (modifier + supprimer)
+    // Boutons modifier / supprimer
     const actions = document.createElement("div");
     actions.classList.add("box-detail-actions");
 
@@ -208,20 +201,11 @@ function showBoxDetail(boxId) {
 
     actions.appendChild(editBtn);
     actions.appendChild(deleteBtn);
-    header.appendChild(backBtn);
-    header.appendChild(titleBlock);
-    header.appendChild(actions);
-    itemsContainer.appendChild(header);
+    infoBlock.appendChild(actions);
 
-    // — Image de couverture —
-    if (box.cover) {
-        const coverImg = document.createElement("div");
-        coverImg.classList.add("box-detail-cover");
-        coverImg.style.backgroundImage    = `url(${box.cover})`;
-        coverImg.style.backgroundSize     = "cover";
-        coverImg.style.backgroundPosition = "center";
-        itemsContainer.appendChild(coverImg);
-    }
+    topRow.appendChild(visual);
+    topRow.appendChild(infoBlock);
+    itemsContainer.appendChild(topRow);
 
     // — Fragments —
     const fragmentsGrid = document.createElement("div");
@@ -245,18 +229,14 @@ function showBoxDetail(boxId) {
     itemsContainer.appendChild(fragmentsGrid);
 }
 
-
 // ______________________________
 // MODALE MODIFIER UNE BOÎTE
 // ______________________________
-// Pour l'instant elle est générée dynamiquement en JS.
-// Tu pourras la remplacer par une vraie modale HTML plus tard.
 
 function openEditBoxModal(boxId) {
     const box = getBoxById(boxId);
     if (!box) return;
 
-    // Supprime une éventuelle modale déjà ouverte
     const existing = document.getElementById("edit-box-modal");
     if (existing) existing.remove();
 
@@ -276,6 +256,13 @@ function openEditBoxModal(boxId) {
             <textarea class="modal-textarea" id="edit-box-desc">${box.description}</textarea>
 
             <label class="modal-label">Image de couverture</label>
+            <div id="cover-preview" style="
+                width:100%; height:80px;
+                background-size:cover; background-position:center;
+                border-radius:2px; margin-bottom:8px;
+                background-color:${box.color};
+                ${box.cover ? `background-image:url(${box.cover});` : ''}
+            "></div>
             <input class="modal-input" id="edit-box-cover" type="file" accept="image/*" />
 
             <label class="modal-label">Couleur</label>
@@ -301,10 +288,6 @@ function openEditBoxModal(boxId) {
 
     document.body.appendChild(overlay);
 
-    // ⚠️ On utilise overlay.querySelector() et non document.getElementById()
-    // pour être sûr que les éléments sont bien dans cette modale-ci.
-
-    // Sélection de couleur
     let selectedColor = box.color;
     overlay.querySelectorAll(".color-dot").forEach(dot => {
         dot.addEventListener("click", function () {
@@ -314,66 +297,34 @@ function openEditBoxModal(boxId) {
         });
     });
 
-    // Image de couverture
-let newCover = box.cover;
+    let newCover = box.cover;
+    const preview = overlay.querySelector("#cover-preview");
 
-// Aperçu de l'image actuelle
-const preview = document.createElement("div");
-preview.id = "cover-preview";
-preview.style.cssText = `
-    width: 100%; height: 80px;
-    background-size: cover; background-position: center;
-    border-radius: 2px; margin-bottom: 8px;
-    background-color: ${box.color};
-`;
-if (box.cover) preview.style.backgroundImage = `url(${box.cover})`;
-
-// Insère l'aperçu avant l'input file
-const fileInput = overlay.querySelector("#edit-box-cover");
-fileInput.parentNode.insertBefore(preview, fileInput);
-
-fileInput.addEventListener("change", function () {
-    const file = this.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        newCover = e.target.result;
-        preview.style.backgroundImage = `url(${newCover})`;
-        preview.style.backgroundColor = "";
-        console.log("Image chargée ✓", newCover.substring(0, 40));
-    };
-    reader.onerror = function() {
-        console.error("Erreur lecture fichier");
-    };
-    reader.readAsDataURL(file);
-});
-
-    // Annuler
-    overlay.querySelector("#edit-box-cancel").addEventListener("click", function () {
-        overlay.remove();
+    overlay.querySelector("#edit-box-cover").addEventListener("change", function () {
+        const file = this.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            newCover = e.target.result;
+            preview.style.backgroundImage = `url(${newCover})`;
+            preview.style.backgroundColor = "";
+        };
+        reader.readAsDataURL(file);
     });
 
-    // Enregistrer
+    overlay.querySelector("#edit-box-cancel").addEventListener("click", () => overlay.remove());
+
     overlay.querySelector("#edit-box-save").addEventListener("click", function () {
         const newName = overlay.querySelector("#edit-box-name").value.trim();
         const newDesc = overlay.querySelector("#edit-box-desc").value.trim();
         if (!newName) { alert("Le nom est obligatoire."); return; }
-
-        updateBox(boxId, {
-            name:        newName,
-            description: newDesc,
-            color:       selectedColor,
-            cover:       newCover,
-        });
-
+        updateBox(boxId, { name: newName, description: newDesc, color: selectedColor, cover: newCover });
         overlay.remove();
-        showBoxDetail(boxId); // rafraîchit la vue
+        showBoxDetail(boxId);
     });
 
-    // Supprimer
     overlay.querySelector("#edit-box-delete").addEventListener("click", function () {
-        if (confirm(`Supprimer la boîte "${box.name}" ? Les fragments seront conservés dans le panier.`)) {
+        if (confirm(`Supprimer la boîte "${box.name}" ?`)) {
             deleteBox(boxId);
             overlay.remove();
             currentBoxId = null;
@@ -381,8 +332,5 @@ fileInput.addEventListener("change", function () {
         }
     });
 
-    // Clic en dehors = ferme
-    overlay.addEventListener("click", function (e) {
-        if (e.target === overlay) overlay.remove();
-    });
+    overlay.addEventListener("click", e => { if (e.target === overlay) overlay.remove(); });
 }
