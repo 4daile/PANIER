@@ -1,6 +1,5 @@
 /** ============================================================
     BOXVIEW.CSS — Styles pour la vue boîtes de PANIER
-    À importer dans basketModal.html après basketModal.css
     ============================================================ */
 
 
@@ -18,14 +17,16 @@
 .box-card:hover {
     transform: translateY(-3px);
     box-shadow: 0 8px 24px rgba(112, 59, 59, 0.15);
+    cursor: pointer;
 }
 
 .box-cover {
     width: 100%;
     height: 100%;
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 3 / 3;
     position: relative;
-    border-radius: 2px;
+    border-radius: 8px;
+    cursor: pointer;
 }
 
 .box-favorite-star {
@@ -221,13 +222,15 @@
     ______________________________ */
 
 .modal-overlay {
-    position: fixed;
-    inset: 0;
+    border: none;
+    padding: 0;
+    background: transparent;
+    max-width: 100vw;
+    max-height: 100vh;
+}
+
+.modal-overlay::backdrop {
     background: rgba(0, 0, 0, 0.35);
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .modal-box {
@@ -241,6 +244,7 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+    align-self: center;
 }
 
 .modal-title {

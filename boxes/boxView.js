@@ -83,10 +83,10 @@ function createBoxCard(box) {
 
     // ← FIX : hauteur explicite pour que l'image soit visible
     cover.style.width           = "100%";
-    cover.style.aspectRatio     = "4 / 3";
+    cover.style.aspectRatio     = "3 / 3";
     cover.style.backgroundSize  = "cover";
     cover.style.backgroundPosition = "center";
-    cover.style.borderRadius    = "2px";
+    cover.style.borderRadius    = "8px";
 
     if (box.cover) {
         cover.style.backgroundImage = `url(${box.cover})`;
@@ -240,7 +240,8 @@ function openEditBoxModal(boxId) {
     const existing = document.getElementById("edit-box-modal");
     if (existing) existing.remove();
 
-    const overlay = document.createElement("div");
+    // ← utilise un <dialog> natif au lieu d'un div
+    const overlay = document.createElement("dialog");
     overlay.id = "edit-box-modal";
     overlay.classList.add("modal-overlay");
 
@@ -286,8 +287,14 @@ function openEditBoxModal(boxId) {
         </div>
     `;
 
-    document.body.appendChild(overlay);
+document.body.appendChild(overlay);
+    overlay.showModal(); // ← ouvre le dialog natif
 
+    // Clic en dehors = ferme
+    overlay.addEventListener("click", function (e) {
+        if (e.target === overlay) overlay.close();
+    });
+    overlay.addEventListener("close", () => overlay.remove());
     let selectedColor = box.color;
     overlay.querySelectorAll(".color-dot").forEach(dot => {
         dot.addEventListener("click", function () {
