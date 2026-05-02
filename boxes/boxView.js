@@ -6,14 +6,9 @@
 let currentBoxId = null;
 
 // ______________________________
-// BOUTON BOÎTE
+// BOUTON BOÎTE — gérée par basketstyle.js
+// (auto-listener retiré pour éviter les doublons)
 // ______________________________
-
-let boxButton = document.getElementById("box");
-boxButton.addEventListener("click", function () {
-    currentBoxId = null;
-    arrangeItemsByBox();
-});
 
 // ______________________________
 // RECHARGEMENT DES FRAGMENTS

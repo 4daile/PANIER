@@ -1,79 +1,148 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
-	<link rel="stylesheet" href="basketModal.css" />
-	<link rel="stylesheet" href="../boxes/boxView.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panier</title>
+  <link rel="stylesheet" href="basketModal.css" />
+  <link rel="stylesheet" href="../boxes/boxView.css" />
 </head>
 <body>
-		<div class="panier">
 
-			<div class="header">
+<div class="panier">
 
-				<div class="search-zone">
-					<div class="research-bar">
-					<input type="text" id="search-input" placeholder="Rechercher dans mon panier...">
-					<button id="search-button">rechercher</button>
-					</div>
-					<div id="search-tags"></div>
-				</div>
-				
-				
+  <!-- ══════════════════════════════
+       HEADER
+       ══════════════════════════════ -->
+  <header class="header">
 
-				<div class="filtres">
-					<button id="nuage">panier</button>
-					<button id="chrono">liste</button>
-					<button id="box">boîte</button>
-				</div>
-			</div>
+    <div class="search-zone">
+      <div class="research-bar">
+        <input type="text" id="search-input" placeholder="CHERCHER DANS LE PANIER...">
+        <button id="search-button">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+          </svg>
+        </button>
+      </div>
+    </div>
 
-			<div id="items-container"></div>
+    <nav class="nav">
 
-			<img class="open" src="/SRC/img/button.png" alt="button_panier">
+      <div class="nav-item">
+        <!-- id="nuage" attendu par basketstyle.js -->
+        <button class="nav-btn active" data-view="nuage" id="nuage">PANIER</button>
+        <div class="nav-tooltip">
+          <span class="tooltip-dot"></span>
+          ICI, TOUS MES<br>FRAGMENTS DÉPOSÉS<br>DANS MON PANIER
+        </div>
+      </div>
 
-			<!--<div class="objets">
-				<img src="/SRC/img/OBJET_1.png" alt="feuille">
-				<img src="/SRC/img/OBJET_2.png" alt="feuille">
-				<img src="/SRC/img/OBJET_3.png" alt="feuille">
-				<img src="/SRC/img/OBJET_4$.png" alt="feuille">
-				<img src="/SRC/img/OBJETS_5.png" alt="feuille">
-				<img src="/SRC/img/OBJETS_6.png" alt="feuille">
-			</div>-->
+      <div class="nav-item">
+        <!-- id="chrono" attendu par basketstyle.js -->
+        <button class="nav-btn" data-view="chrono" id="chrono">LISTE</button>
+        <div class="nav-tooltip">
+          <span class="tooltip-dot"></span>
+          LES FRAGMENTS SONT<br>TRIÉS PAR ORDRE<br>CHRONOLOGIQUES
+        </div>
+      </div>
 
-			<div class="panneau">
-				<button class="close">⨉</button>
-				<!-- COMPTEUR DE FRAGMENTS -->
-					<div class="fragment-counter">
-						<div class="counter-text">
-							<span id="fragment-count">0</span> fragment(s) récupéré(s)
-					</div>
-				<div class="panneau-header"></div>
-				<div class="infos">
-					<strong id="words">PANIER</strong> est un outil pour cueillir le web. Récoltez des fragments de textes sur n'importe quelle page web pour les déposer dans votre panier. 
-						<div class="links">
-						<a href="https://github.com/4daile/PANIER" target="_blank">READ ME</a>
-						<a href="/SRC/img/NOTICE.pdf" target="_blank">NOTICE</a>
-						</div>
-				</div>
-				<div class="web2print">
-					Vous pouvez exporter votre panier au format pdf pour pouvoir l'imprimer ou le conserver sur votre bureau.
-					<a href="print.html" target="_blank" class="print-button">PRINT</a>
-				</div>
-				<div class="attention">
-					<h5>Attention!! Cette action est irréversible et tout le contenu de votre panier sera supprimé!</h5>
-					<button class="delete">vider mon panier</button>
-				</div>
-			</div>
-		</div>
+      <div class="nav-item">
+        <!-- id="box" attendu par boxView.js (le clone est géré dans basketstyle.js) -->
+        <button class="nav-btn" data-view="box" id="box">BOÎTE</button>
+        <div class="nav-tooltip">
+          <span class="tooltip-dot"></span>
+          IL EST TEMPS DE<br>RANGER SA RÉCOLTE.<br>BOÎTES DE CONSERVE
+        </div>
+      </div>
+
+      <div class="nav-item">
+        <!-- id="print-btn" pour éviter conflit avec d'éventuels id="print" réservés -->
+        <button class="nav-btn" data-view="print" id="print-btn">PRINT</button>
+        <div class="nav-tooltip">
+          <span class="tooltip-dot"></span>
+          GARDER SA<br>CUEILLETTE À<br>PORTÉE DE MAIN
+        </div>
+      </div>
+
+      <div class="nav-item">
+        <button class="nav-btn" data-view="about" id="about-btn">À PROPOS</button>
+        <div class="nav-tooltip">
+          <span class="tooltip-dot"></span>
+          EN SAVOIR PLUS<br>SUR PANIER
+        </div>
+      </div>
+
+    </nav>
+  </header>
+
+  <!-- Tags de recherche actifs -->
+  <div class="search-tags-bar" id="search-tags-bar"></div>
+
+  <!-- ══════════════════════════════
+       CONTAINER FRAGMENTS
+       Géré par basketstyle.js
+       ══════════════════════════════ -->
+  <main id="items-container"></main>
+
+  <!-- ══════════════════════════════
+       VUE PRINT — frère d'items-container
+       ══════════════════════════════ -->
+  <div id="view-print" class="view-section" style="display:none">
+    <div class="print-grid">
+      <div class="print-card">
+        <h3>Imprimer en pdf</h3>
+        <label><input type="checkbox"> tout le panier</label>
+        <label><input type="checkbox"> boîtes</label>
+      </div>
+      <div class="print-card">
+        <h3>Imprimer en fanzine</h3>
+      </div>
+      <div class="print-card">
+        <h3>Imprimer en pense-bêtes</h3>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════
+       VUE À PROPOS — frère d'items-container
+       ══════════════════════════════ -->
+  <div id="view-about" class="view-section" style="display:none">
+    <div class="about-content">
+      <div class="fragment-counter">
+        <span id="fragment-count">0</span> fragment(s) récupéré(s)
+      </div>
+      <p class="infos">
+        <strong id="words">PANIER</strong> est un outil pour cueillir le web.
+        Récoltez des fragments de textes sur n'importe quelle page web
+        pour les déposer dans votre panier.
+      </p>
+      <div class="links">
+        <a href="https://github.com/4daile/PANIER" target="_blank">READ ME</a>
+        <a href="/SRC/img/NOTICE.pdf" target="_blank">NOTICE</a>
+      </div>
+      <div class="attention">
+        <h5>Attention !! Cette action est irréversible et tout le contenu de votre panier sera supprimé !</h5>
+        <button class="delete">vider mon panier</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- .panier -->
+
+<!--
+  Ordre de chargement :
+  1. basketModal.js  — charge items depuis localStorage
+  2. basketstyle.js  — toute la navigation + recherche (PAS de nav.js)
+  3. boxes.js        — CRUD boîtes
+  4. boxView.js      — rendu grille boîtes
+                       boxView.js essaie d'attacher un listener sur #box
+                       → basketstyle.js le neutralise via cloneNode()
+-->
+<script src="basketModal.js"></script>
+<script src="basketstyle.js"></script>
+<script src="../boxes/boxes.js"></script>
+<script src="../boxes/boxView.js"></script>
+
 </body>
-		<script src="basketModal.js"></script>
-		<script src="basketstyle.js"></script>
-		<script src="../boxes/boxes.js"></script>
-		<script src="../boxes/boxView.js"></script>
 </html>
-
-
-	
-

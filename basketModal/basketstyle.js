@@ -1,301 +1,285 @@
-// _____________________________
-// BUTTONS :D
-// _____________________________
+// ============================================================
+// BASKETSTYLE.JS — Vue et navigation pour PANIER
+// Gère : nuage, liste, boîte, print, à propos, recherche
+// ============================================================
 
-console.log("hello worlds")
+console.log("basketstyle.js chargé");
 
-let DeleteButton = document.querySelector(".delete"); 
-DeleteButton.addEventListener("click", function() {
-    clearBasket();
-})
+// ──────────────────────────────────────────
+// UTILITAIRES DOM
+// ──────────────────────────────────────────
 
-let myButton = document.querySelector(".open");
-myButton.addEventListener("click", function() {
-    openPanneau();
-})
-
-let closeButton = document.querySelector(".close");
-closeButton.addEventListener("click", function() {
-    closePanneau();
-})
-
-function openPanneau(){
-    document.querySelector(".panneau").classList.add("active")
-    //console.log("panneau")
-    //console.log("active")
+function getItems() {
+    try {
+        return JSON.parse(localStorage.getItem("basketItems")) || [];
+    } catch { return []; }
 }
 
-function closePanneau(){
-    document.querySelector(".panneau").classList.remove("active")
+// ──────────────────────────────────────────
+// VIDER LE PANIER
+// ──────────────────────────────────────────
+
+let DeleteButton = document.querySelector(".delete");
+if (DeleteButton) {
+    DeleteButton.addEventListener("click", function () {
+        if (confirm("Vider tout le panier ? Cette action est irréversible.")) {
+            localStorage.removeItem("basketItems");
+            location.reload();
+        }
+    });
 }
 
-function clearBasket() {
-    localStorage.removeItem("basketItems");
-    updateFragmentCounter();
-    location.reload();
+// ──────────────────────────────────────────
+// COMPTEUR DE FRAGMENTS
+// ──────────────────────────────────────────
+
+function updateFragmentCounter() {
+    const counter = document.getElementById("fragment-count");
+    if (!counter) return;
+    const items = getItems();
+    counter.textContent = items.length;
+}
+
+// ──────────────────────────────────────────
+// NAVIGATION — switcher central
+// Masque tout, affiche la bonne vue
+// ──────────────────────────────────────────
+
+function hideAllViews() {
+    const container = document.getElementById("items-container");
+    container.style.display   = "none";
+    container.innerHTML       = "";
+    container.style.position  = "";
+    container.style.height    = "";
+    container.style.minHeight = "";
+    container.style.overflow  = "";
+    container.className       = "";
+
+    document.getElementById("view-print").style.display = "none";
+    document.getElementById("view-about").style.display = "none";
+}
+
+function setActiveNav(viewName) {
+    document.querySelectorAll(".nav-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.view === viewName);
+    });
+}
+
+// ──────────────────────────────────────────
+// VUE NUAGE — positionnement aléatoire, scrollable
+// ──────────────────────────────────────────
+
+let nuageButton = document.getElementById("nuage");
+if (nuageButton) nuageButton.addEventListener("click", positionItemsRandomly);
+
+window.addEventListener("load", function () {
+    positionItemsRandomly();
+});
+
+function positionItemsRandomly() {
+    clearSearch();
+    hideAllViews();
+    setActiveNav("nuage");
+
+    const itemsContainer = document.getElementById("items-container");
+    itemsContainer.style.display   = "block";
+    itemsContainer.style.position  = "relative";
+    itemsContainer.style.overflowY = "auto";
+    itemsContainer.style.overflowX = "hidden";
+
+    reloadFragmentsIntoDOM();
+
+    const items       = Array.from(document.querySelectorAll(".basket-item"));
+    const ITEM_W      = 250;
+    const ITEM_H_EST  = 140;
+    const GAP         = 16;
+    const containerW  = itemsContainer.clientWidth || 800;
+    const cols        = Math.max(1, Math.floor(containerW / (ITEM_W + GAP)));
+    const rows        = Math.ceil(items.length / cols);
+    const totalH      = Math.max(rows * (ITEM_H_EST + GAP) + 80, window.innerHeight * 0.7);
+
+    itemsContainer.style.height    = totalH + "px";
+    itemsContainer.style.minHeight = "calc(100vh - 150px)";
+
+    items.forEach((item, i) => {
+        const col    = i % cols;
+        const row    = Math.floor(i / cols);
+        const baseX  = col * (ITEM_W + GAP) + GAP;
+        const baseY  = row * (ITEM_H_EST + GAP) + GAP;
+        const jitterX = (Math.random() - 0.5) * 40;
+        const jitterY = (Math.random() - 0.5) * 30;
+        const x = Math.max(0, Math.min(baseX + jitterX, containerW - ITEM_W - GAP));
+        const y = Math.max(0, baseY + jitterY);
+
+        item.style.position = "absolute";
+        item.style.left     = x + "px";
+        item.style.top      = y + "px";
+    });
+}
+
+// ──────────────────────────────────────────
+// VUE LISTE — colonnes masonry, plus récent en premier
+// ──────────────────────────────────────────
+
+let chronoButton = document.getElementById("chrono");
+if (chronoButton) chronoButton.addEventListener("click", arrangeItemsChronologically);
+
+function arrangeItemsChronologically() {
+    clearSearch();
+    hideAllViews();
+    setActiveNav("chrono");
+
+    const itemsContainer = document.getElementById("items-container");
+    itemsContainer.style.display = "block";
+
+    reloadFragmentsIntoDOM();
+
+    // Trier par date : plus récent en premier
+    const allItems = Array.from(document.querySelectorAll(".basket-item"));
+    allItems.sort((a, b) => {
+        const dateA = new Date(a.querySelector(".item-date")?.textContent || 0);
+        const dateB = new Date(b.querySelector(".item-date")?.textContent || 0);
+        return dateB - dateA;
+    });
+
+    // Wrapper interne pour les colonnes
+    // (évite tout conflit avec les styles inline d'items-container)
+    const wrapper = document.createElement("div");
+    wrapper.className = "chrono-wrapper";
+
+    allItems.forEach(item => {
+        item.style.position = "static";
+        item.style.left     = "";
+        item.style.top      = "";
+        wrapper.appendChild(item);
+    });
+
+    itemsContainer.appendChild(wrapper);
+}
+
+// ──────────────────────────────────────────
+// VUE BOÎTE — déléguée à boxView.js
+// ──────────────────────────────────────────
+
+let boxButton = document.getElementById("box");
+// boxView.js ajoute son propre listener sur #box.
+// On surcharge ici pour passer d'abord par hideAllViews().
+if (boxButton) {
+    // On retire l'ancien listener de boxView.js en clonant le nœud
+    const newBoxButton = boxButton.cloneNode(true);
+    boxButton.parentNode.replaceChild(newBoxButton, boxButton);
+
+    newBoxButton.addEventListener("click", function () {
+        clearSearch();
+        hideAllViews();
+        setActiveNav("box");
+        const itemsContainer = document.getElementById("items-container");
+        itemsContainer.style.display = "block";
+        if (typeof arrangeItemsByBox === "function") arrangeItemsByBox();
+    });
+}
+
+// ──────────────────────────────────────────
+// VUE PRINT
+// ──────────────────────────────────────────
+
+let printButton = document.getElementById("print-btn");
+if (printButton) {
+    printButton.addEventListener("click", function () {
+        clearSearch();
+        hideAllViews();
+        setActiveNav("print");
+        document.getElementById("view-print").style.display = "block";
+        window.scrollTo(0, 0);
+    });
+}
+
+// ──────────────────────────────────────────
+// VUE À PROPOS
+// ──────────────────────────────────────────
+
+let aboutButton = document.getElementById("about-btn");
+if (aboutButton) {
+    aboutButton.addEventListener("click", function () {
+        clearSearch();
+        hideAllViews();
+        setActiveNav("about");
+        document.getElementById("view-about").style.display = "block";
+        updateFragmentCounter();
+        window.scrollTo(0, 0);
+    });
+}
+
+// ──────────────────────────────────────────
+// RECHERCHE
+// ──────────────────────────────────────────
+
+let searchButtonEl    = document.getElementById("search-button");
+let searchInputEl     = document.getElementById("search-input");
+let searchTagsBar     = document.getElementById("search-tags-bar");
+let currentSearchQuery = null;
+
+if (searchButtonEl) searchButtonEl.addEventListener("click", searchItems);
+if (searchInputEl)  searchInputEl.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") searchItems();
+});
+
+function searchItems() {
+    const query = searchInputEl ? searchInputEl.value.trim().toLowerCase() : "";
+    if (query === "") { clearSearch(); return; }
+
+    currentSearchQuery = query;
+
+    // On passe en vue liste pour la recherche
+    arrangeItemsChronologically();
+
+    const queryWords = query.split(/\s+/).filter(w => w.length > 0);
+    renderSearchTags(queryWords);
+
+    document.querySelectorAll(".basket-item").forEach(item => {
+        const textContent = item.textContent.toLowerCase();
+        const allFound    = queryWords.every(w => textContent.includes(w));
+
+        item.style.display = allFound ? "" : "none";
+
+        if (allFound) {
+            const p = item.querySelector("p");
+            if (!p) return;
+            let html = p.textContent;
+            queryWords.forEach(word => {
+                const re = new RegExp(`(${escapeRegex(word)})`, "gi");
+                html = html.replace(re, "<mark>$1</mark>");
+            });
+            p.innerHTML = html;
+        }
+    });
+}
+
+function renderSearchTags(words) {
+    if (!searchTagsBar) return;
+    searchTagsBar.innerHTML = "";
+    words.forEach(word => {
+        const tag = document.createElement("span");
+        tag.className = "search-tag";
+        tag.innerHTML = `${word} <button class="tag-close" data-word="${word}">✕</button>`;
+        tag.querySelector(".tag-close").addEventListener("click", clearSearch);
+        searchTagsBar.appendChild(tag);
+    });
+}
+
+function clearSearch() {
+    if (searchInputEl)  searchInputEl.value = "";
+    if (searchTagsBar)  searchTagsBar.innerHTML = "";
+    currentSearchQuery = null;
+}
+
+function escapeRegex(s) {
+    return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 function showAllItems() {
     document.querySelectorAll(".basket-item").forEach(item => {
         item.style.display = "";
-    // Supprime le surlignage en remettant le texte brut
-        item.querySelectorAll("mark").forEach(mark => {
-            mark.replaceWith(mark.textContent);
-        });
-    });
-}
-
-// ______________________________
-// LOADING BASKET 
-// ______________________________
-
-window.addEventListener("load", function() {
-    positionItemsRandomly();
-});
-
-let isNuageView = true; // pour savoir dans quelle vue on est
-
-window.addEventListener("load", function() {
-    positionItemsRandomly();
-    //initDragDropObjects();
-    //initDragDropItems();
-    //loadObjectPositions();
-    
-});
-
-// ______________________________
-// COMPTEUR DE FRAGMENTS
-// ______________________________
-
-function updateFragmentCounter() {
-    const items = document.querySelectorAll(".basket-item");
-    const count = items.length;
-    const maxFragments = 500; // limite max pour la jauge (tu peux ajuster)
-    
-    // Met à jour le texte
-    const counterText = document.getElementById("fragment-count");
-    if (counterText) {
-        counterText.textContent = count;
-    }
-}
-
-
-
-// ______________________________
-// DRAG AND DROP POUR LES ITEMS (seulement en vue nuage)
-// ______________________________
-/*
-function initDragDropItems() {
-    const items = document.querySelectorAll(".basket-item");
-    
-    items.forEach((item, index) => {
-        let isDragging = false;
-        let offsetX, offsetY;
-        
-        item.addEventListener("mousedown", function(e) {
-            if (!isNuageView) return; // drag seulement en vue nuage
-            
-            isDragging = true;
-            item.classList.add("dragging");
-            
-            const rect = item.getBoundingClientRect();
-            offsetX = e.clientX - rect.left;
-            offsetY = e.clientY - rect.top;
-            
-            e.preventDefault();
-        });
-        
-        document.addEventListener("mousemove", function(e) {
-            if (!isDragging) return;
-            
-            const container = document.getElementById("items-container");
-            const containerRect = container.getBoundingClientRect();
-            
-            const x = e.clientX - containerRect.left - offsetX;
-            const y = e.clientY - containerRect.top - offsetY;
-            
-            item.style.left = `${x}px`;
-            item.style.top = `${y}px`;
-        });
-        
-        document.addEventListener("mouseup", function() {
-            if (isDragging) {
-                isDragging = false;
-                item.classList.remove("dragging");
-                
-                // Sauvegarde la position de l'item
-                const position = {
-                    left: item.style.left,
-                    top: item.style.top
-                };
-                localStorage.setItem(`item-${index}-position`, JSON.stringify(position));
-            }
-        });
-    });
-}*/
-
-// ———————————————————————————————
-// POSITIONNEMENT ALÉATOIRE DES ITEMS = NUAGE VIEW
-// _______________________________
-
-let nuageButton = document.getElementById("nuage");
-nuageButton.addEventListener("click", positionItemsRandomly);
-
-function positionItemsRandomly() {
-    reloadFragmentsIntoDOM(); 
-    showAllItems();
-    const itemsContainer = document.getElementById("items-container");
-    const items = document.querySelectorAll(".basket-item");
-
-    // s'assure que le conteneur permet le placement libre
-    itemsContainer.style.position = "relative";
-
-    items.forEach(item => {
-
-        item.style.position = "absolute";
-
-        const containerWidth = itemsContainer.clientWidth;
-        const containerHeight = itemsContainer.clientHeight;
-
-        const itemWidth = item.offsetWidth || 200;
-        const itemHeight = item.offsetHeight || 100;
-
-        const x = Math.random() * Math.max(0, containerWidth - itemWidth);
-        const y = Math.random() * Math.max(0, containerHeight - itemHeight);
-
-        item.style.left = `${Math.round(x)}px`;
-        item.style.top = `${Math.round(y)}px`;
-    });
-}
-
-// ______________________
-// COLLECTION VIEW BUTTON = CHRONOLOGICAL ORDER 
-// ______________________
-
-let chronoButton = document.getElementById("chrono");
-chronoButton.addEventListener("click", arrangeItemsChronologically);
-
-function arrangeItemsChronologically() {
-    reloadFragmentsIntoDOM(); 
-    showAllItems();
-    const itemsContainer = document.getElementById("items-container");
-    const items = Array.from(document.querySelectorAll(".basket-item"));
-    itemsContainer.style.position = "static"; // réinitialise le positionnement du conteneur
-    itemsContainer.style.display = "flex";
-    itemsContainer.style.flexDirection = "row";
-    itemsContainer.style.alignItems = "flex-start";
-    itemsContainer.style.flexWrap = "wrap"; 
-    itemsContainer.style.justifyContent = "flex-start";
-    itemsContainer.style.gap = "10px";
- //   itemsContainer.style.padding = "10px";
-    itemsContainer.innerHTML = ""; // vide le conteneur avant de réajouter les items
-
-    // trie les items par dates 
-
-    items.sort((a, b) => {
-        const dateA = new Date(a.querySelector("p:nth-child(2)").textContent);
-        const dateB = new Date(b.querySelector("p:nth-child(2)").textContent);
-        return dateB - dateA;
-    });
-
-    items.forEach(item => {
-        item.style.position = "static";
-        itemsContainer.appendChild(item);
-    });
-}
-
-// _____________________________
-// RECHERCHE DANS LE PANIER (RESEARCH BAR)
-// _____________________________
-
-// ______________________________
-// RECHERCHE
-// ______________________________
-
-let searchButton = document.getElementById("search-button");
-let searchInput = document.getElementById("search-input");
-let searchTagsContainer = document.getElementById("search-tags");
-let currentSearchQuery = null; // Stocke la requête actuelle
-
-searchButton.addEventListener("click", function() {
-    searchItems();
-});
-
-// Bonus : recherche aussi en appuyant sur Entrée
-searchInput.addEventListener("keydown", function(e) {
-    if (e.key === "Enter") searchItems();
-});
-
-function createSearchTags(words) {
-    // Vide le conteneur
-    searchTagsContainer.innerHTML = "";
-    
-    // Crée un tag pour chaque mot
-    words.forEach(word => {
-        const tag = document.createElement("span");
-        tag.className = "search-tag";
-        tag.innerHTML = `${word} <button class="tag-close" data-word="${word}">✕</button>`;
-        
-        // Ajoute l'événement pour supprimer le tag
-        tag.querySelector(".tag-close").addEventListener("click", function() {
-            clearSearch();
-        });
-        
-        searchTagsContainer.appendChild(tag);
-    });
-}
-
-function clearSearch() {
-    searchInput.value = "";
-    searchTagsContainer.innerHTML = "";
-    currentSearchQuery = null;
-    
-    // Réaffiche tous les items et revient à la vue nuage
-    document.querySelectorAll(".basket-item").forEach(item => {
-        item.style.display = "";
-        item.querySelectorAll("mark").forEach(mark => {
-            mark.replaceWith(mark.textContent);
-        });
-    });
-    
-    positionItemsRandomly();
-}
-
-function searchItems() {
-    const query = searchInput.value.trim().toLowerCase();
-
-    if (query === "") {
-        searchTagsContainer.innerHTML = "";
-        positionItemsRandomly();
-        return;
-    }
-
-    currentSearchQuery = query;
-
-    // D'abord on réorganise — ça recrée les items dans le DOM
-    arrangeItemsChronologically();
-
-    // ENSUITE seulement on récupère les items et on filtre
-    const items = document.querySelectorAll(".basket-item");
-    const queryWords = query.split(/\s+/).filter(word => word.length > 0);
-    createSearchTags(queryWords);
-
-    items.forEach(item => {
-        const text = item.textContent.toLowerCase();
-        const allWordsFound = queryWords.every(word => {
-            return new RegExp(`\\b${word}\\b`).test(text);
-        });
-
-        item.style.display = allWordsFound ? "" : "none";
-
-        if (allWordsFound) {
-            const originalText = item.querySelector("p").textContent;
-            let highlighted = originalText;
-            queryWords.forEach(word => {
-                const regex = new RegExp(`\\b${word}\\b`, "gi");
-                highlighted = highlighted.replace(regex, match => `<mark>${match}</mark>`);
-            });
-            item.querySelector("p").innerHTML = highlighted;
-        }
+        item.querySelectorAll("mark").forEach(m => m.replaceWith(m.textContent));
     });
 }
