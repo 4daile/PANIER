@@ -457,3 +457,170 @@ h5 {
 }
 .delete:hover { background: #a83232; }
 
+/* ═══════════════════════════════════════
+   VUE PRINT THERMIQUE (57.5mm)
+   ═══════════════════════════════════════ */
+
+.thermal-container {
+  width: 57.5mm;
+  margin: 0 auto;
+  background: white;
+  padding: 8mm 4mm;
+  font-size: 10px;
+  font-family: monospace;
+  line-height: 1.4;
+  color: #222;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.thermal-header {
+  text-align: center;
+  border-bottom: 1px solid #222;
+  padding-bottom: 6mm;
+  margin-bottom: 6mm;
+}
+
+.thermal-header h2 {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 2mm;
+  letter-spacing: 2px;
+}
+
+.thermal-header p {
+  font-size: 9px;
+  margin: 1mm 0;
+}
+
+.thermal-fragment {
+  margin-bottom: 6mm;
+  padding-bottom: 4mm;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.thermal-text {
+  font-size: 10px;
+  line-height: 1.5;
+  margin-bottom: 2mm;
+  font-weight: 500;
+}
+
+.thermal-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 1mm;
+  font-size: 8px;
+  color: #555;
+}
+
+.thermal-date {
+  font-size: 8px;
+  color: #777;
+}
+
+.thermal-url {
+  font-size: 7px;
+  color: #888;
+  word-break: break-all;
+  font-family: monospace;
+}
+
+.thermal-separator {
+  border-top: 1px dashed #ccc;
+  margin-top: 2mm;
+}
+
+.thermal-footer {
+  text-align: center;
+  border-top: 1px solid #222;
+  padding-top: 4mm;
+  font-size: 9px;
+  font-weight: bold;
+}
+
+.thermal-empty {
+  text-align: center;
+  color: #999;
+  padding: 10mm 0;
+  font-size: 10px;
+}
+
+.thermal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 30px;
+  justify-content: center;
+}
+
+.action-btn {
+  font-family: "Kosugi", monospace, sans-serif;
+  padding: 10px 24px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background 0.2s;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+.action-btn--print {
+  background: #99AD7A;
+  color: #F0E9B6;
+}
+
+.action-btn--print:hover {
+  background: #84994F;
+}
+
+.action-btn--download {
+  background: #547060;
+  color: #fff;
+}
+
+.action-btn--download:hover {
+  background: #3f5244;
+}
+
+/* Configuration impression thermique */
+@media print {
+  body {
+    background: white;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .panier {
+    background: white;
+    padding: 0;
+  }
+  
+  .header,
+  .search-tags-bar,
+  .nav,
+  .thermal-actions {
+    display: none !important;
+  }
+  
+  #view-print,
+  .view-section {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  
+  .thermal-container {
+    width: 57.5mm;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+    page-break-after: always;
+  }
+  
+  /* Pour une imprimante thermique USB */
+  @page {
+    size: 57.5mm auto;
+    margin: 0;
+  }
+}
+

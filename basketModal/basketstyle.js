@@ -180,18 +180,98 @@ if (boxButton) {
 }
 
 // ──────────────────────────────────────────
-// VUE PRINT
+// VUE PRINT — Imprimante thermique 57.5mm
 // ──────────────────────────────────────────
 
 let printButton = document.getElementById("print-btn");
 if (printButton) {
-    printButton.addEventListener("click", function () {
-        clearSearch();
-        hideAllViews();
-        setActiveNav("print");
-        document.getElementById("view-print").style.display = "block";
-        window.scrollTo(0, 0);
+    printButton.addEventListener("click", generateThermalPrint);
+}
+
+function generateThermalPrint() {
+    clearSearch();
+    hideAllViews();
+    setActiveNav("print");
+
+    const viewPrint = document.getElementById("view-print");
+    viewPrint.style.display = "block";
+    viewPrint.innerHTML = ""; // Réinitialise
+    
+    // Récupère les fragments
+    const items = getItems();
+    
+    // Conteneur thermique
+    const thermalContainer = document.createElement("div");
+    thermalContainer.className = "thermal-container";
+    
+    // En-tête
+    const header = document.createElement("div");
+    header.className = "thermal-header";
+    header.innerHTML = `
+        <h2>PANIER</h2>
+        <p>mes fragments collectés</p>
+        <p class="thermal-date">${new Date().toLocaleDateString('fr-FR')}</p>
+    `;
+    thermalContainer.appendChild(header);
+    
+    // Fragments
+    if (items.length === 0) {
+        const empty = document.createElement("p");
+        empty.className = "thermal-empty";
+        empty.textContent = "Aucun fragment à imprimer";
+        thermalContainer.appendChild(empty);
+    } else {
+        items.forEach((item, index) => {
+            const fragment = document.createElement("div");
+            fragment.className = "thermal-fragment";
+            fragment.innerHTML = `
+                <div class="thermal-text">${item.selection}</div>
+                <div class="thermal-meta">
+                    <span class="thermal-date">${new Date(item.date).toLocaleDateString('fr-FR')}</span>
+                    <span class="thermal-url">${item.url}</span>
+                </div>
+                <div class="thermal-separator"></div>
+            `;
+            thermalContainer.appendChild(fragment);
+        });
+    }
+    
+    // Pied de page
+    const footer = document.createElement("div");
+    footer.className = "thermal-footer";
+    footer.innerHTML = `<p>${items.length} fragment${items.length !== 1 ? 's' : ''} collecté${items.length !== 1 ? 's' : ''}</p>`;
+    thermalContainer.appendChild(footer);
+    
+    viewPrint.appendChild(thermalContainer);
+    
+    // Ajout des boutons d'action
+    addThermalActions(viewPrint, items);
+    
+    window.scrollTo(0, 0);
+}
+
+function addThermalActions(viewPrint, items) {
+    const actions = document.createElement("div");
+    actions.className = "thermal-actions";
+    
+    const printBtn = document.createElement("button");
+    printBtn.className = "action-btn action-btn--print";
+    printBtn.textContent = "Imprimer";
+    printBtn.addEventListener("click", function () {
+        window.print();
     });
+    
+    const downloadBtn = document.createElement("button");
+    downloadBtn.className = "action-btn action-btn--download";
+    downloadBtn.textContent = "Télécharger PDF";
+    downloadBtn.addEventListener("click", function () {
+        // À implémenter: convertir en PDF si nécessaire
+        alert("Fonctionnalité PDF bientôt disponible");
+    });
+    
+    actions.appendChild(printBtn);
+    actions.appendChild(downloadBtn);
+    viewPrint.appendChild(actions);
 }
 
 // ──────────────────────────────────────────
