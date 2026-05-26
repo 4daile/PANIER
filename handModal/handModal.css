@@ -7,6 +7,11 @@
     src: url(/SRC/typo/Kosugi-Regular.ttf);
 }
 
+:root {
+    --grad-top: #B5E18B;
+    --grad-bot: #f3f1b4;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -15,7 +20,7 @@
 
 body {
     font-family: "Kosugi", sans-serif;
-    background-color: #eaecc1;
+    background: linear-gradient(to bottom, var(--grad-top) 0%, var(--grad-bot) 30%);
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -23,7 +28,7 @@ body {
 }
 
 .mainbox {
-    background-color: #f3f1b4;
+    background-color: transparent;
     width: 100%;
     max-width: 370px;
     max-height: 500px;
@@ -41,7 +46,7 @@ body {
     font-family: "Kosugi", sans-serif;
     font-size: 18px;
     font-weight: normal;
-    color: #333;
+    color: #5a2e2e;
     text-align: center;
     letter-spacing: 0.1em;
 }
@@ -57,13 +62,13 @@ body {
     border: 1px solid #ccc;
     background: #faf9e0;
     font-size: 13px;
-    color: #333;
+    color: #5a2e2e;
     border-radius: 2px;
     outline: none;
 }
 
 #selected-text:focus {
-    border-color: #703B3B;
+    border-color: #5a2e2e;
 }
 
 /* ______________________________
@@ -78,7 +83,7 @@ body {
 
 .box-section-title {
     font-size: 11px;
-    color: #703B3B;
+    color: #5a2e2e;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     text-align: center;
