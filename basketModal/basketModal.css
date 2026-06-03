@@ -397,6 +397,28 @@ a:hover { color: var(--nav-text); }
   accent-color: #F0E9B6;
 }
 
+.thermal-flower {
+    text-align: center;
+    margin: 6px 0 2px 0;
+}
+
+.thermal-flower-img {
+    width: 48px;      /* taille du blason — ajustez selon goût */
+    height: auto;
+    opacity: 0.85;
+    /* Si vos PNG sont sur fond noir (comme l'exemple),
+       cette inversion les rend adaptés à l'impression thermique blanc */
+    filter: invert(1) contrast(5) brightness(0.4) grayscale(1);
+
+}
+
+@media print {
+    .thermal-flower-img {
+        width: 40px;
+        filter: invert(1);
+    }
+}
+
 /* ═══════════════════════════════════════
    VUE ABOUT
    ═══════════════════════════════════════ */
